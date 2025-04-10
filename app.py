@@ -19,7 +19,7 @@ def get_local_ip():
     return IP
 
 try:
-    model_pkg = joblib.load('model/vitamin_recommender_nb.pkl')
+    model_pkg = joblib.load('models/vitamin_recommender_nb.pkl')
     print("✅ Model loaded successfully!")
 except Exception as e:
     print(f"❌ Model loading failed: {str(e)}")
