@@ -1,38 +1,29 @@
-from flask import Flask, render_template, request, jsonify
-import joblib
-import pandas as pd
-import socket
+from flask import Flask, render_template, request
+import pickle
+import numpy as np
 
 app = Flask(__name__)
 
-def get_local_ip():
-    """Get the local network IP address"""
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    try:
-        # Doesn't need to be reachable
-        s.connect(('10.255.255.255', 1))
-        IP = s.getsockname()[0]
-    except Exception:
-        IP = '127.0.0.1'
-    finally:
-        s.close()
-    return IP
-
-try:
-    model_pkg = joblib.load('models/vitamin_recommender_nb.pkl')
-    print("✅ Model loaded successfully!")
-except Exception as e:
-    print(f"❌ Model loading failed: {str(e)}")
-    raise
+# Load your model
+with open('model/vitamin_recommender_nb.pkl', 'rb') as f:
+    model = pickle.load(f)
 
 @app.route('/')
 def home():
     return render_template('index.html')
 
-if __name__ == '__main__':
-    local_ip = get_local_ip()
-    print(f"\n🌐 Access URLs:")
-    print(f"Local: http://localhost:5000")
-    print(f"Network: http://{local_ip}:5000")
+@app.route('/predict', methods=['POST'])
+def predict():
+    # Get input features from the form
+    features = [float(x) for x in request.form.values()]
+    final_features = np.array(features).reshape(1, -1)
     
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    # Make prediction
+    prediction = model.predict(final_features)
+    
+    # Return the result
+    return render_template('index.html', 
+                          prediction_text='Recommended Vitamin: {}'.format(prediction[0]))
+
+if __name__ == '__main__':
+    app.run(debug=True)

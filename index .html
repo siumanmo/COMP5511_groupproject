@@ -1,116 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Vitamin Recommender</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Vitamin Recommendation System</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 50px; }
+        .container { max-width: 600px; margin: 0 auto; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; }
+        input { width: 100%; padding: 8px; }
+        button { padding: 10px 15px; background: #007bff; color: white; border: none; }
+        .result { margin-top: 20px; padding: 10px; background: #f0f0f0; }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1>Vitamin Recommendation System</h1>
-        
-        <div class="form-container">
-            <form id="predictionForm">
-                <div class="form-group">
-                    <label for="age">Age:</label>
-                    <input type="number" id="age" name="age" min="1" max="120" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="gender">Gender:</label>
-                    <select id="gender" name="gender" required>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-                
-                <!-- Add other fields similarly -->
-                <button type="submit">Get Recommendation</button>
-            </form>
-        </div>
-        
-        <div id="results" class="hidden">
-            <h2>Recommended: <span id="recommendation"></span></h2>
-            
-            <div class="chart-container">
-                <canvas id="probabilityChart"></canvas>
+        <h1>Vitamin Recommendation</h1>
+        <form action="/predict" method="post">
+            <!-- Adjust these inputs based on your model's features -->
+            <div class="form-group">
+                <label for="feature1">Age:</label>
+                <input type="number" id="feature1" name="feature1" required>
             </div>
-            
-            <h3>Your Input:</h3>
-            <ul id="inputSummary"></ul>
-        </div>
-    </div>
-
-    <script>
-        document.getElementById('predictionForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const formData = {
-                age: parseInt(document.getElementById('age').value),
-                gender: document.getElementById('gender').value,
-                // Add other fields
-            };
-            
-            try {
-                const response = await fetch('/predict', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(formData)
-                });
-                
-                const data = await response.json();
-                
-                if (data.error) throw new Error(data.error);
-                
-                // Display results
-                document.getElementById('recommendation').textContent = data.recommendation;
-                
-                // Update chart
-                updateChart(data.probabilities);
-                
-                // Show input summary
-                const summaryList = document.getElementById('inputSummary');
-                summaryList.innerHTML = '';
-                for (const [key, value] of Object.entries(data.input_summary)) {
-                    const li = document.createElement('li');
-                    li.innerHTML = `<strong>${key}:</strong> ${value}`;
-                    summaryList.appendChild(li);
-                }
-                
-                document.getElementById('results').classList.remove('hidden');
-                
-            } catch (error) {
-                alert(`Error: ${error.message}`);
-            }
-        });
+            <div class="form-group">
+                <label for="feature2">Diet Score (1-10):</label>
+                <input type="number" id="feature2" name="feature2" min="1" max="10" required>
+            </div>
+            <!-- Add more features as needed -->
+            <button type="submit">Recommend Vitamin</button>
+        </form>
         
-        let chart;
-        function updateChart(probabilities) {
-            const ctx = document.getElementById('probabilityChart').getContext('2d');
-            const labels = Object.keys(probabilities);
-            const data = labels.map(label => parseFloat(probabilities[label]));
-            
-            if (chart) chart.destroy();
-            
-            chart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Probability (%)',
-                        data: data,
-                        backgroundColor: 'rgba(54, 162, 235, 0.7)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: { y: { beginAtZero: true, max: 100 } },
-                    responsive: true
-                }
-            });
-        }
-    </script>
+        {% if prediction_text %}
+        <div class="result">
+            <h3>{{ prediction_text }}</h3>
+        </div>
+        {% endif %}
+    </div>
 </body>
 </html>
