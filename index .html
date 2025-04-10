@@ -2,101 +2,115 @@
 <html>
 <head>
     <title>Vitamin Recommender</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        input, select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-        }
-        button {
-            background: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            cursor: pointer;
-        }
-        .result {
-            margin-top: 20px;
-            padding: 15px;
-            background: #f0f0f0;
-            border-radius: 5px;
-        }
-        .error {
-            color: red;
-        }
-        .prob-bar {
-            height: 20px;
-            background: #ddd;
-            margin-bottom: 5px;
-        }
-        .prob-fill {
-            height: 100%;
-            background: #4CAF50;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <h1>Vitamin Recommendation</h1>
-    
-    <form method="POST">
-        <div class="form-group">
-            <label>Age:</label>
-            <input type="number" name="age" min="1" max="120" required>
-        </div>
-
-        {% for field, options in options.items() %}
-        <div class="form-group">
-            <label>{{ field|replace('_', ' ')|title }}:</label>
-            <select name="{{ field }}" required>
-                {% for option in options %}
-                <option value="{{ option }}">{{ option }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        {% endfor %}
-
-        <button type="submit">Get Recommendation</button>
-    </form>
-
-    {% if error %}
-        <div class="error">{{ error }}</div>
-    {% endif %}
-
-    {% if result %}
-    <div class="result">
-        <h2>Recommended: <strong>{{ result }}</strong></h2>
+    <div class="container">
+        <h1>Vitamin Recommendation System</h1>
         
-        <h3>Probabilities:</h3>
-        {% for vitamin, prob in probabilities.items() %}
-        <div>
-            {{ vitamin }}: {{ prob }}
-            <div class="prob-bar">
-                <div class="prob-fill" style="width: {{ prob }}"></div>
+        <div class="form-container">
+            <form id="predictionForm">
+                <div class="form-group">
+                    <label for="age">Age:</label>
+                    <input type="number" id="age" name="age" min="1" max="120" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="gender">Gender:</label>
+                    <select id="gender" name="gender" required>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                
+                <!-- Add other fields similarly -->
+                <button type="submit">Get Recommendation</button>
+            </form>
+        </div>
+        
+        <div id="results" class="hidden">
+            <h2>Recommended: <span id="recommendation"></span></h2>
+            
+            <div class="chart-container">
+                <canvas id="probabilityChart"></canvas>
             </div>
+            
+            <h3>Your Input:</h3>
+            <ul id="inputSummary"></ul>
         </div>
-        {% endfor %}
-        
-        <h3>Your Input:</h3>
-        <ul>
-            {% for field, value in form_data.items() %}
-            <li><strong>{{ field|replace('_', ' ')|title }}:</strong> {{ value }}</li>
-            {% endfor %}
-        </ul>
     </div>
-    {% endif %}
+
+    <script>
+        document.getElementById('predictionForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                age: parseInt(document.getElementById('age').value),
+                gender: document.getElementById('gender').value,
+                // Add other fields
+            };
+            
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                
+                const data = await response.json();
+                
+                if (data.error) throw new Error(data.error);
+                
+                // Display results
+                document.getElementById('recommendation').textContent = data.recommendation;
+                
+                // Update chart
+                updateChart(data.probabilities);
+                
+                // Show input summary
+                const summaryList = document.getElementById('inputSummary');
+                summaryList.innerHTML = '';
+                for (const [key, value] of Object.entries(data.input_summary)) {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<strong>${key}:</strong> ${value}`;
+                    summaryList.appendChild(li);
+                }
+                
+                document.getElementById('results').classList.remove('hidden');
+                
+            } catch (error) {
+                alert(`Error: ${error.message}`);
+            }
+        });
+        
+        let chart;
+        function updateChart(probabilities) {
+            const ctx = document.getElementById('probabilityChart').getContext('2d');
+            const labels = Object.keys(probabilities);
+            const data = labels.map(label => parseFloat(probabilities[label]));
+            
+            if (chart) chart.destroy();
+            
+            chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Probability (%)',
+                        data: data,
+                        backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: { y: { beginAtZero: true, max: 100 } },
+                    responsive: true
+                }
+            });
+        }
+    </script>
 </body>
 </html>

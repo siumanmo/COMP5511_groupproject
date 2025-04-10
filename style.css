@@ -1,74 +1,92 @@
-/* Add to your existing CSS */
-
-.predict-button {
-    background-color: #3498db;
-    font-size: 18px;
-    padding: 12px;
-    margin-top: 20px;
-}
-
-.recommendation {
-    background: #e8f4fc;
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    margin: 0;
     padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 20px;
+    background-color: #f5f7fa;
+    color: #333;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+h1 {
+    color: #2c3e50;
     text-align: center;
+    margin-bottom: 30px;
 }
 
-.highlight {
-    color: #e74c3c;
-    font-size: 1.5em;
-}
-
-.confidence {
-    font-size: 1.2em;
-    color: #27ae60;
-    margin-top: 10px;
-}
-
-.explanation {
-    background: #f8f9fa;
-    padding: 15px;
-    border-radius: 8px;
+.form-group {
     margin-bottom: 20px;
 }
 
-.probability-bars {
-    margin-top: 15px;
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #2c3e50;
 }
 
-.probability-item {
-    margin-bottom: 10px;
-}
-
-.probability-bar-container {
-    display: flex;
-    align-items: center;
-    margin-top: 5px;
-}
-
-.probability-bar {
-    height: 20px;
-    background-color: #3498db;
-    border-radius: 4px;
-}
-
-.probability-text {
-    margin-left: 10px;
-    font-weight: bold;
-}
-
-table {
+input, select {
     width: 100%;
-    border-collapse: collapse;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
     margin-top: 10px;
+    transition: background-color 0.3s;
 }
 
-table td {
-    padding: 8px;
-    border-bottom: 1px solid #ddd;
+button:hover {
+    background-color: #2980b9;
 }
 
-table tr:last-child td {
-    border-bottom: none;
+#results {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+.hidden {
+    display: none;
+}
+
+.chart-container {
+    margin: 30px 0;
+    position: relative;
+    height: 300px;
+}
+
+#inputSummary {
+    list-style: none;
+    padding: 0;
+}
+
+#inputSummary li {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+#recommendation {
+    color: #e74c3c;
+    font-weight: bold;
 }
