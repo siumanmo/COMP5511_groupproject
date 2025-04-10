@@ -1,29 +1,38 @@
-from flask import Flask, render_template, request
-import pickle
-import numpy as np
+from flask import Flask, request, render_template
+import joblib
+import pandas as pd
 
 app = Flask(__name__)
+model = joblib.load('model/vitamin_recommender_nb.pkl')
 
-# Load your model
-with open('model/vitamin_recommender_nb.pkl', 'rb') as f:
-    model = pickle.load(f)
+# Manual mapping (replace with your actual categories)
+CATEGORY_MAPPINGS = {
+    'gender': {'male': 0, 'female': 1},
+    'diet': {'poor': 0, 'average': 1, 'good': 2, 'excellent': 3},
+    # Add other columns as needed
+}
 
-@app.route('/')
-def home():
-    return render_template('index.html')
-
-@app.route('/predict', methods=['POST'])
-def predict():
-    # Get input features from the form
-    features = [float(x) for x in request.form.values()]
-    final_features = np.array(features).reshape(1, -1)
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    if request.method == 'POST':
+        try:
+            input_data = {
+                'age': float(request.form['age']),
+                'gender': CATEGORY_MAPPINGS['gender'][request.form['gender']],
+                'diet': CATEGORY_MAPPINGS['diet'][request.form['diet']],
+                # Add other fields
+            }
+            
+            input_df = pd.DataFrame([input_data])
+            prediction = model.predict(input_df)
+            
+            return render_template('result.html', 
+                                supplement=prediction[0])
+        
+        except Exception as e:
+            return render_template('error.html', error=str(e))
     
-    # Make prediction
-    prediction = model.predict(final_features)
-    
-    # Return the result
-    return render_template('index.html', 
-                          prediction_text='Recommended Vitamin: {}'.format(prediction[0]))
+    return render_template('form.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
