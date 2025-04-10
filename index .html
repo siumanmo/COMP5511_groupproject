@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vitamin Recommender</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Vitamin Recommendation</h1>
+        <form action="/predict" method="POST">
+            <input type="number" name="age" placeholder="Age" required>
+            <select name="gender" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+            <button type="submit">Get Recommendation</button>
+        </form>
+    </div>
+</body>
+</html>
