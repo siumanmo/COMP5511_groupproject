@@ -2,19 +2,101 @@
 <html>
 <head>
     <title>Vitamin Recommender</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0f0f0;
+            border-radius: 5px;
+        }
+        .error {
+            color: red;
+        }
+        .prob-bar {
+            height: 20px;
+            background: #ddd;
+            margin-bottom: 5px;
+        }
+        .prob-fill {
+            height: 100%;
+            background: #4CAF50;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Vitamin Recommendation</h1>
-        <form action="/predict" method="POST">
-            <input type="number" name="age" placeholder="Age" required>
-            <select name="gender" required>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
+    <h1>Vitamin Recommendation</h1>
+    
+    <form method="POST">
+        <div class="form-group">
+            <label>Age:</label>
+            <input type="number" name="age" min="1" max="120" required>
+        </div>
+
+        {% for field, options in options.items() %}
+        <div class="form-group">
+            <label>{{ field|replace('_', ' ')|title }}:</label>
+            <select name="{{ field }}" required>
+                {% for option in options %}
+                <option value="{{ option }}">{{ option }}</option>
+                {% endfor %}
             </select>
-            <button type="submit">Get Recommendation</button>
-        </form>
+        </div>
+        {% endfor %}
+
+        <button type="submit">Get Recommendation</button>
+    </form>
+
+    {% if error %}
+        <div class="error">{{ error }}</div>
+    {% endif %}
+
+    {% if result %}
+    <div class="result">
+        <h2>Recommended: <strong>{{ result }}</strong></h2>
+        
+        <h3>Probabilities:</h3>
+        {% for vitamin, prob in probabilities.items() %}
+        <div>
+            {{ vitamin }}: {{ prob }}
+            <div class="prob-bar">
+                <div class="prob-fill" style="width: {{ prob }}"></div>
+            </div>
+        </div>
+        {% endfor %}
+        
+        <h3>Your Input:</h3>
+        <ul>
+            {% for field, value in form_data.items() %}
+            <li><strong>{{ field|replace('_', ' ')|title }}:</strong> {{ value }}</li>
+            {% endfor %}
+        </ul>
     </div>
+    {% endif %}
 </body>
 </html>
