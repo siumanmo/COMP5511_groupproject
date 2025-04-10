@@ -1,0 +1,74 @@
+/* Add to your existing CSS */
+
+.predict-button {
+    background-color: #3498db;
+    font-size: 18px;
+    padding: 12px;
+    margin-top: 20px;
+}
+
+.recommendation {
+    background: #e8f4fc;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.highlight {
+    color: #e74c3c;
+    font-size: 1.5em;
+}
+
+.confidence {
+    font-size: 1.2em;
+    color: #27ae60;
+    margin-top: 10px;
+}
+
+.explanation {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.probability-bars {
+    margin-top: 15px;
+}
+
+.probability-item {
+    margin-bottom: 10px;
+}
+
+.probability-bar-container {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.probability-bar {
+    height: 20px;
+    background-color: #3498db;
+    border-radius: 4px;
+}
+
+.probability-text {
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+table td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+table tr:last-child td {
+    border-bottom: none;
+}
