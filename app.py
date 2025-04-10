@@ -1,54 +1,38 @@
 from flask import Flask, render_template, request, jsonify
 import joblib
 import pandas as pd
+import socket
 
 app = Flask(__name__)
 
-# Load model
-model_pkg = joblib.load('models/vitamin_recommender_nb.pkl')
-model = model_pkg['model']
-label_encoders = model_pkg['label_encoders']
-target_encoder = model_pkg['target_encoder']
-class_names = model_pkg['class_names']
+def get_local_ip():
+    """Get the local network IP address"""
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        # Doesn't need to be reachable
+        s.connect(('10.255.255.255', 1))
+        IP = s.getsockname()[0]
+    except Exception:
+        IP = '127.0.0.1'
+    finally:
+        s.close()
+    return IP
+
+try:
+    model_pkg = joblib.load('model/vitamin_recommender_nb.pkl')
+    print("✅ Model loaded successfully!")
+except Exception as e:
+    print(f"❌ Model loading failed: {str(e)}")
+    raise
 
 @app.route('/')
 def home():
-    return render_template('index.html', 
-                         vitamins=class_names,
-                         features=model_pkg['feature_names'])
-
-@app.route('/predict', methods=['POST'])
-def predict():
-    try:
-        # Get form data
-        form_data = request.json
-        
-        # Convert to DataFrame with correct feature order
-        input_df = pd.DataFrame([form_data], columns=model_pkg['feature_names'])
-        
-        # Encode categorical features
-        for col, le in label_encoders.items():
-            if col in input_df.columns:
-                input_df[col] = le.transform(input_df[col])
-        
-        # Predict
-        proba = model.predict_proba(input_df)[0]
-        prediction = model.predict(input_df)[0]
-        
-        # Format results
-        results = {
-            'recommendation': target_encoder.inverse_transform([prediction])[0],
-            'probabilities': {
-                class_names[i]: f"{p*100:.1f}%" 
-                for i, p in enumerate(proba)
-            },
-            'input_summary': form_data
-        }
-        
-        return jsonify(results)
-    
-    except Exception as e:
-        return jsonify({'error': str(e)}), 400
+    return render_template('index.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    local_ip = get_local_ip()
+    print(f"\n🌐 Access URLs:")
+    print(f"Local: http://localhost:5000")
+    print(f"Network: http://{local_ip}:5000")
+    
+    app.run(host='0.0.0.0', port=5000, debug=True)
