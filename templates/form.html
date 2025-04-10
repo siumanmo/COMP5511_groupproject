@@ -3,12 +3,11 @@
 <head>
     <title>Vitamin Recommendation</title>
     <style>
-        body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; padding: 20px; }
         .form-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 5px; font-weight: bold; }
         input, select { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
         button { background: #4CAF50; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; }
-        button:hover { background: #45a049; }
     </style>
 </head>
 <body>
@@ -29,24 +28,41 @@
         </div>
         
         <div class="form-group">
-            <label for="health_condition">Health Condition:</label>
-            <select id="health_condition" name="health_condition" required>
-                <option value="">Select Health Condition</option>
-                <option value="excellent">Excellent</option>
-                <option value="good">Good</option>
-                <option value="fair">Fair</option>
+            <label for="diet">Diet Quality:</label>
+            <select id="diet" name="diet" required>
+                <option value="">Select Diet Quality</option>
                 <option value="poor">Poor</option>
+                <option value="average">Average</option>
+                <option value="good">Good</option>
+                <option value="excellent">Excellent</option>
             </select>
         </div>
         
         <div class="form-group">
-            <label for="diet">Diet Quality:</label>
-            <select id="diet" name="diet" required>
-                <option value="">Select Diet Quality</option>
-                <option value="excellent">Excellent</option>
-                <option value="good">Good</option>
-                <option value="average">Average</option>
-                <option value="poor">Poor</option>
+            <label for="sun_exposure">Sun Exposure:</label>
+            <select id="sun_exposure" name="sun_exposure" required>
+                <option value="">Select Sun Exposure</option>
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="pregnant">Pregnant (females only):</label>
+            <select id="pregnant" name="pregnant" required>
+                <option value="">Select Option</option>
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="smoker">Smoker:</label>
+            <select id="smoker" name="smoker" required>
+                <option value="">Select Option</option>
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
             </select>
         </div>
         
@@ -61,7 +77,18 @@
             </select>
         </div>
         
-        <button type="submit">Get Recommendation</button>
+        <div class="form-group">
+            <label for="health_condition">Health Condition:</label>
+            <select id="health_condition" name="health_condition" required>
+                <option value="">Select Health Condition</option>
+                <option value="poor">Poor</option>
+                <option value="fair">Fair</option>
+                <option value="good">Good</option>
+                <option value="excellent">Excellent</option>
+            </select>
+        </div>
+        
+        <button type="submit">Get Vitamin Recommendation</button>
     </form>
 </body>
 </html>

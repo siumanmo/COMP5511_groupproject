@@ -1,30 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Your Recommendation</title>
+    <title>Recommendation Result</title>
     <style>
-        body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; padding: 20px; }
         .result-card { background: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 20px; }
         .back-btn { display: inline-block; margin-top: 20px; padding: 8px 16px; background: #6c757d; color: white; text-decoration: none; border-radius: 4px; }
-        .back-btn:hover { background: #5a6268; }
     </style>
 </head>
 <body>
     <h1>Your Vitamin Recommendation</h1>
     
     <div class="result-card">
-        <h2>Recommended Supplement: {{ supplement }}</h2>
+        <h2>Recommended Vitamin: {{ supplement }}</h2>
         
         <h3>Based on your inputs:</h3>
         <ul>
             <li>Age: {{ user_input.age }}</li>
             <li>Gender: {{ user_input.gender }}</li>
-            <li>Health Condition: {{ user_input.health_condition }}</li>
-            <li>Diet Quality: {{ user_input.diet }}</li>
+            <li>Diet: {{ user_input.diet }}</li>
+            <li>Sun Exposure: {{ user_input.sun_exposure }}</li>
+            <li>Pregnant: {{ user_input.pregnant }}</li>
+            <li>Smoker: {{ user_input.smoker }}</li>
             <li>Activity Level: {{ user_input.activity_level }}</li>
+            <li>Health Condition: {{ user_input.health_condition }}</li>
         </ul>
     </div>
     
-    <a href="/" class="back-btn">Start Over</a>
+    <a href="/" class="back-btn">Make Another Recommendation</a>
 </body>
 </html>
