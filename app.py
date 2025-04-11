@@ -8,115 +8,115 @@ import traceback
 
 app = Flask(__name__)
 
-# ======================
-# 1. ENHANCED CONFIGURATION
-# ======================
+# Configuration
 BASE_DIR = Path(__file__).parent
 MODEL_DIR = BASE_DIR / "model"
-
-# Debug mode - set to False in production
-DEBUG = True
+DEBUG = True  # Set to False in production
 
 def debug_print(*args, **kwargs):
-    """Print debug messages to stderr"""
     if DEBUG:
         print(*args, file=sys.stderr, **kwargs)
 
 # ======================
-# 2. SUPER ROBUST MODEL LOADING
+# SUPER ROBUST MODEL LOADER
 # ======================
-def load_models(max_retries=3):
-    """Load models with retries and comprehensive validation"""
-    retry_count = 0
-    last_exception = None
-    
-    while retry_count < max_retries:
-        try:
-            debug_print("\n=== ATTEMPTING MODEL LOAD ===")
-            
-            # 1. Verify directory structure
-            if not MODEL_DIR.exists():
-                raise FileNotFoundError(f"Directory 'model' not found at {MODEL_DIR}")
-            
-            debug_print("✓ Model directory exists")
-            
-            # 2. Verify model files
-            model_files = {
-                'model': 'vitamin_recommender_nb.pkl',
-                'encoder': 'target_encoder.pkl'
-            }
-            
-            missing_files = []
-            for name, filename in model_files.items():
-                path = MODEL_DIR / filename
-                if not path.exists():
-                    missing_files.append(str(path))
-                else:
-                    size_kb = os.path.getsize(path) / 1024
-                    debug_print(f"✓ {name.ljust(8)}: {path} ({size_kb:.1f} KB)")
-            
-            if missing_files:
-                raise FileNotFoundError(f"Missing files: {', '.join(missing_files)}")
-            
-            # 3. Load with validation
-            model_path = MODEL_DIR / model_files['model']
-            encoder_path = MODEL_DIR / model_files['encoder']
-            
-            debug_print("\nLoading model...")
-            with open(model_path, 'rb') as f:
-                model_data = joblib.load(f)
-                model = model_data.get('model') if isinstance(model_data, dict) else model_data
-            
-            debug_print("Loading encoder...")
-            with open(encoder_path, 'rb') as f:
-                encoder = joblib.load(f)
-            
-            # 4. Validate loaded objects
-            if not hasattr(model, 'predict'):
-                raise AttributeError("Model object missing predict() method")
-            
-            if not hasattr(encoder, 'inverse_transform'):
-                raise AttributeError("Encoder missing inverse_transform()")
-            
-            debug_print("\n✅ MODELS LOADED SUCCESSFULLY")
-            debug_print(f"Model type: {type(model)}")
-            debug_print(f"Encoder type: {type(encoder)}")
-            
-            return model, encoder
-            
-        except Exception as e:
-            last_exception = e
-            retry_count += 1
-            debug_print(f"\n⚠️ Load failed (attempt {retry_count}/{max_retries}):")
-            debug_print(traceback.format_exc())
-            if retry_count < max_retries:
-                debug_print("Retrying...")
-    
-    debug_print("\n❌ ALL LOAD ATTEMPTS FAILED")
-    return None, None
+def load_models():
+    """Load models with maximum error handling"""
+    try:
+        # 1. Verify directory structure
+        debug_print("\n=== STARTING MODEL LOAD ===")
+        debug_print(f"Base directory: {BASE_DIR}")
+        
+        if not MODEL_DIR.exists():
+            debug_print(f"❌ Model directory missing at {MODEL_DIR}")
+            debug_print("Current directory contents:")
+            for f in BASE_DIR.iterdir():
+                debug_print(f" - {f.name}")
+            raise FileNotFoundError("Model directory not found")
 
-# Initialize models with retries
+        # 2. Verify model files exist
+        model_files = {
+            'model': MODEL_DIR / "vitamin_recommender_nb.pkl",
+            'encoder': MODEL_DIR / "target_encoder.pkl"
+        }
+
+        debug_print("\n=== VERIFYING FILES ===")
+        for name, path in model_files.items():
+            if not path.exists():
+                debug_print(f"❌ Missing {name} file at {path}")
+                debug_print(f"Model directory contents: {os.listdir(MODEL_DIR)}")
+                raise FileNotFoundError(f"Missing {name} file")
+            debug_print(f"✓ Found {name} at {path}")
+
+        # 3. Load with validation
+        debug_print("\n=== LOADING MODELS ===")
+        with open(model_files['model'], 'rb') as f:
+            model_data = joblib.load(f)
+            model = model_data.get('model') if isinstance(model_data, dict) else model_data
+            debug_print(f"Model type: {type(model)}")
+
+        with open(model_files['encoder'], 'rb') as f:
+            encoder = joblib.load(f)
+            debug_print(f"Encoder type: {type(encoder)}")
+
+        # 4. Validate functionality
+        if not hasattr(model, 'predict'):
+            raise AttributeError("Model missing predict() method")
+        if not hasattr(encoder, 'inverse_transform'):
+            raise AttributeError("Encoder missing inverse_transform()")
+
+        debug_print("\n✅ MODELS LOADED SUCCESSFULLY")
+        return model, encoder
+
+    except Exception as e:
+        debug_print("\n❌ LOAD FAILED:")
+        debug_print(traceback.format_exc())
+        return None, None
+
+# Initialize models
 model, target_encoder = load_models()
 
 # ======================
-# 3. APPLICATION CORE
+# DEBUG ENDPOINTS
 # ======================
-@app.route('/debug/files')
-def debug_files():
-    """Endpoint to check file system"""
-    files = []
-    for root, dirs, filenames in os.walk(BASE_DIR):
-        for f in filenames:
-            files.append(f"{root}/{f}")
-    return {"files": files, "model_loaded": model is not None}
+@app.route('/system-check')
+def system_check():
+    """Comprehensive system diagnostics"""
+    status = {
+        'model_loaded': model is not None,
+        'encoder_loaded': target_encoder is not None,
+        'files': {}
+    }
 
+    # Check model files
+    model_files = ['vitamin_recommender_nb.pkl', 'target_encoder.pkl']
+    for f in model_files:
+        path = MODEL_DIR / f
+        status['files'][f] = {
+            'exists': path.exists(),
+            'size': f"{os.path.getsize(path)/1024:.1f} KB" if path.exists() else None
+        }
+
+    # Add directory structure
+    status['directory_structure'] = []
+    for root, dirs, files in os.walk(BASE_DIR):
+        status['directory_structure'].append({
+            'path': str(Path(root).relative_to(BASE_DIR)),
+            'files': files
+        })
+
+    return status
+
+# ======================
+# MAIN APPLICATION
+# ======================
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
         if not all([model, target_encoder]):
-            debug_print("\nCRITICAL: Models not loaded during prediction request!")
+            debug_print("\nCRITICAL: Models not loaded!")
             return render_template('error.html',
-                error="System initialization failed. Technical details have been logged.")
+                error="System initialization failed. Visit /system-check for details.")
         
         try:
             # [Your existing prediction code here]
@@ -124,7 +124,7 @@ def index():
         except Exception as e:
             debug_print("\nPrediction error:", traceback.format_exc())
             return render_template('error.html',
-                error="Processing error. Please check your inputs.")
+                error="Processing error. Please try again.")
     
     return render_template('form.html')
 
