@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vitamin Recommendation System</title>
+    <link rel="stylesheet" href="/workspaces/COMP5511_groupproject/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Vitamin Recommendation System</h1>
+        <form action="/predict" method="post">
+            <div class="form-group">
+                <label for="age">Age:</label>
+                <input type="number" id="age" name="age" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="gender">Gender:</label>
+                <select id="gender" name="gender" required>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="dietary_habits">Dietary Habits:</label>
+                <select id="dietary_habits" name="dietary_habits" required>
+                    <option value="vegetarian">Vegetarian</option>
+                    <option value="vegan">Vegan</option>
+                    <option value="omnivore">Omnivore</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="physical_activity">Physical Activity:</label>
+                <select id="physical_activity" name="physical_activity" required>
+                    <option value="sedentary">Sedentary</option>
+                    <option value="moderate">Moderate</option>
+                    <option value="active">Active</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="sleep_pattern">Sleep Pattern:</label>
+                <select id="sleep_pattern" name="sleep_pattern" required>
+                    <option value="poor">Poor</option>
+                    <option value="average">Average</option>
+                    <option value="good">Good</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="stress_level">Stress Level:</label>
+                <select id="stress_level" name="stress_level" required>
+                    <option value="high">High</option>
+                    <option value="medium">Medium</option>
+                    <option value="low">Low</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="health_goal">Health Goal:</label>
+                <select id="health_goal" name="health_goal" required>
+                    <option value="weight_loss">Weight Loss</option>
+                    <option value="muscle_gain">Muscle Gain</option>
+                    <option value="general_health">General Health</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="existing_condition">Existing Condition:</label>
+                <select id="existing_condition" name="existing_condition" required>
+                    <option value="none">None</option>
+                    <option value="diabetes">Diabetes</option>
+                    <option value="hypertension">Hypertension</option>
+                    <option value="anemia">Anemia</option>
+                </select>
+            </div>
+            
+            <button type="submit">Get Vitamin Recommendation</button>
+        </form>
+        
+        {% if prediction_text %}
+        <div class="prediction-result">
+            <h3>{{ prediction_text }}</h3>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

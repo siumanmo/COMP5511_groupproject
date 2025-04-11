@@ -1,132 +1,70 @@
-from flask import Flask, request, render_template
+from flask import Flask, render_template, request, jsonify
 import joblib
 import pandas as pd
-import os
-from pathlib import Path
-import sys
-import traceback
+import numpy as np
 
 app = Flask(__name__)
 
-# Configuration
-BASE_DIR = Path(__file__).parent
-MODEL_DIR = BASE_DIR / "model"
-DEBUG = True  # Set to False in production
+# Load the model and encoder
+nb_model = joblib.load('models/vitamin_recommender_nb.pkl')
+target_encoder = joblib.load('models/target_encoder.pkl')
 
-def debug_print(*args, **kwargs):
-    if DEBUG:
-        print(*args, file=sys.stderr, **kwargs)
+# Define feature columns in the same order as training
+FEATURE_COLUMNS = [
+    'age', 'gender', 'dietary_habits', 'physical_activity', 
+    'sleep_pattern', 'stress_level', 'health_goal', 'existing_condition'
+]
 
-# ======================
-# SUPER ROBUST MODEL LOADER
-# ======================
-def load_models():
-    """Load models with maximum error handling"""
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+@app.route('/predict', methods=['POST'])
+def predict():
     try:
-        # 1. Verify directory structure
-        debug_print("\n=== STARTING MODEL LOAD ===")
-        debug_print(f"Base directory: {BASE_DIR}")
-        
-        if not MODEL_DIR.exists():
-            debug_print(f"❌ Model directory missing at {MODEL_DIR}")
-            debug_print("Current directory contents:")
-            for f in BASE_DIR.iterdir():
-                debug_print(f" - {f.name}")
-            raise FileNotFoundError("Model directory not found")
-
-        # 2. Verify model files exist
-        model_files = {
-            'model': MODEL_DIR / "vitamin_recommender_nb.pkl",
-            'encoder': MODEL_DIR / "target_encoder.pkl"
+        # Get form data
+        input_data = {
+            'age': int(request.form['age']),
+            'gender': request.form['gender'],
+            'dietary_habits': request.form['dietary_habits'],
+            'physical_activity': request.form['physical_activity'],
+            'sleep_pattern': request.form['sleep_pattern'],
+            'stress_level': request.form['stress_level'],
+            'health_goal': request.form['health_goal'],
+            'existing_condition': request.form['existing_condition']
         }
-
-        debug_print("\n=== VERIFYING FILES ===")
-        for name, path in model_files.items():
-            if not path.exists():
-                debug_print(f"❌ Missing {name} file at {path}")
-                debug_print(f"Model directory contents: {os.listdir(MODEL_DIR)}")
-                raise FileNotFoundError(f"Missing {name} file")
-            debug_print(f"✓ Found {name} at {path}")
-
-        # 3. Load with validation
-        debug_print("\n=== LOADING MODELS ===")
-        with open(model_files['model'], 'rb') as f:
-            model_data = joblib.load(f)
-            model = model_data.get('model') if isinstance(model_data, dict) else model_data
-            debug_print(f"Model type: {type(model)}")
-
-        with open(model_files['encoder'], 'rb') as f:
-            encoder = joblib.load(f)
-            debug_print(f"Encoder type: {type(encoder)}")
-
-        # 4. Validate functionality
-        if not hasattr(model, 'predict'):
-            raise AttributeError("Model missing predict() method")
-        if not hasattr(encoder, 'inverse_transform'):
-            raise AttributeError("Encoder missing inverse_transform()")
-
-        debug_print("\n✅ MODELS LOADED SUCCESSFULLY")
-        return model, encoder
-
-    except Exception as e:
-        debug_print("\n❌ LOAD FAILED:")
-        debug_print(traceback.format_exc())
-        return None, None
-
-# Initialize models
-model, target_encoder = load_models()
-
-# ======================
-# DEBUG ENDPOINTS
-# ======================
-@app.route('/system-check')
-def system_check():
-    """Comprehensive system diagnostics"""
-    status = {
-        'model_loaded': model is not None,
-        'encoder_loaded': target_encoder is not None,
-        'files': {}
-    }
-
-    # Check model files
-    model_files = ['vitamin_recommender_nb.pkl', 'target_encoder.pkl']
-    for f in model_files:
-        path = MODEL_DIR / f
-        status['files'][f] = {
-            'exists': path.exists(),
-            'size': f"{os.path.getsize(path)/1024:.1f} KB" if path.exists() else None
-        }
-
-    # Add directory structure
-    status['directory_structure'] = []
-    for root, dirs, files in os.walk(BASE_DIR):
-        status['directory_structure'].append({
-            'path': str(Path(root).relative_to(BASE_DIR)),
-            'files': files
-        })
-
-    return status
-
-# ======================
-# MAIN APPLICATION
-# ======================
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    if request.method == 'POST':
-        if not all([model, target_encoder]):
-            debug_print("\nCRITICAL: Models not loaded!")
-            return render_template('error.html',
-                error="System initialization failed. Visit /system-check for details.")
         
-        try:
-            # [Your existing prediction code here]
-            return render_template('result.html', prediction="TEST")
-        except Exception as e:
-            debug_print("\nPrediction error:", traceback.format_exc())
-            return render_template('error.html',
-                error="Processing error. Please try again.")
+        # Convert to DataFrame
+        input_df = pd.DataFrame([input_data])
+        
+        # Encode categorical variables (using same encoding as training)
+        # Note: In a production app, you should save and load the encoders for each feature
+        gender_map = {'male': 1, 'female': 0}
+        dietary_map = {'vegetarian': 2, 'vegan': 1, 'omnivore': 0}
+        activity_map = {'sedentary': 0, 'moderate': 1, 'active': 2}
+        sleep_map = {'poor': 0, 'average': 1, 'good': 2}
+        stress_map = {'high': 0, 'medium': 1, 'low': 2}
+        goal_map = {'weight_loss': 0, 'muscle_gain': 1, 'general_health': 2}
+        condition_map = {'none': 0, 'diabetes': 1, 'hypertension': 2, 'anemia': 3}
+        
+        input_df['gender'] = input_df['gender'].map(gender_map)
+        input_df['dietary_habits'] = input_df['dietary_habits'].map(dietary_map)
+        input_df['physical_activity'] = input_df['physical_activity'].map(activity_map)
+        input_df['sleep_pattern'] = input_df['sleep_pattern'].map(sleep_map)
+        input_df['stress_level'] = input_df['stress_level'].map(stress_map)
+        input_df['health_goal'] = input_df['health_goal'].map(goal_map)
+        input_df['existing_condition'] = input_df['existing_condition'].map(condition_map)
+        
+        # Make prediction
+        prediction = nb_model.predict(input_df)
+        recommended_vitamin = target_encoder.inverse_transform(prediction)[0]
+        
+        return render_template('index.html', 
+                             prediction_text=f'Recommended Vitamin: {recommended_vitamin}')
     
-    return render_template('form.html')
+    except Exception as e:
+        return render_template('index.html', 
+                             prediction_text=f'Error: {str(e)}')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
+    app.run(debug=True)
