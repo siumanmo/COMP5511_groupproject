@@ -6,8 +6,8 @@ import numpy as np
 app = Flask(__name__)
 
 # Load the model and encoder
-nb_model = joblib.load('models/vitamin_recommender_nb.pkl')
-target_encoder = joblib.load('models/target_encoder.pkl')
+nb_model = joblib.load('model/vitamin_recommender_nb.pkl')
+target_encoder = joblib.load('model/target_encoder.pkl')
 
 # Define feature columns in the same order as training
 FEATURE_COLUMNS = [
