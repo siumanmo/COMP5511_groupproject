@@ -7,42 +7,62 @@ from pathlib import Path
 app = Flask(__name__)
 
 # ======================
-# 1. PATH CONFIGURATION
+# 1. CONFIGURATION
 # ======================
 BASE_DIR = Path(__file__).parent
 MODEL_DIR = BASE_DIR / "model"
 
-# Model file paths
-MODEL_PATH = MODEL_DIR / "vitamin_recommender_nb.pkl"
-ENCODER_PATH = MODEL_DIR / "target_encoder.pkl"
+# Debugging - Print directory structure
+print("\n=== CURRENT DIRECTORY STRUCTURE ===")
+for root, dirs, files in os.walk(BASE_DIR):
+    print(f"{root.replace(str(BASE_DIR), '')}/")
+    for file in files:
+        print(f"  - {file}")
 
 # ======================
 # 2. MODEL LOADING
 # ======================
 def load_models():
-    """Load model and encoder with error handling"""
+    """Safely load models with extensive error handling"""
     try:
-        # Debug: List files in model directory
-        print(f"Files in model/: {os.listdir(MODEL_DIR)}")
+        # Verify model directory exists
+        if not MODEL_DIR.exists():
+            raise FileNotFoundError(f"Model directory not found at {MODEL_DIR}")
         
-        # Load model (handle both dict-wrapped and direct models)
-        loaded = joblib.load(MODEL_PATH)
-        model = loaded['model'] if isinstance(loaded, dict) else loaded
+        # Verify model files exist
+        required_files = {
+            "model": MODEL_DIR / "vitamin_recommender_nb.pkl",
+            "encoder": MODEL_DIR / "target_encoder.pkl"
+        }
         
-        # Load encoder
-        encoder = joblib.load(ENCODER_PATH)
+        for name, path in required_files.items():
+            if not path.exists():
+                raise FileNotFoundError(f"Missing {name} file at {path}")
         
-        print("✅ Models loaded successfully!")
+        # Load files
+        model_data = joblib.load(required_files["model"])
+        encoder = joblib.load(required_files["encoder"])
+        
+        # Handle different model formats
+        model = model_data['model'] if isinstance(model_data, dict) else model_data
+        
+        print("\n=== MODEL LOAD SUCCESS ===")
+        print(f"Model type: {type(model)}")
+        print(f"Encoder type: {type(encoder)}")
+        
         return model, encoder
+        
     except Exception as e:
-        print(f"❌ Model loading failed: {str(e)}")
+        print(f"\n=== LOAD FAILED ===")
+        print(f"Error type: {type(e).__name__}")
+        print(f"Error details: {str(e)}")
         return None, None
 
-# Initialize models at startup
+# Initialize models
 model, target_encoder = load_models()
 
 # ======================
-# 3. MAPPINGS & DEFAULTS
+# 3. APPLICATION LOGIC
 # ======================
 CATEGORY_MAPPINGS = {
     'gender': {'male': 0, 'female': 1},
@@ -55,65 +75,59 @@ CATEGORY_MAPPINGS = {
 }
 
 DEFAULTS = {
-    'diet': CATEGORY_MAPPINGS['diet']['average'],
-    'sun_exposure': CATEGORY_MAPPINGS['sun_exposure']['medium'],
-    'pregnant': CATEGORY_MAPPINGS['pregnant']['no'],
-    'smoker': CATEGORY_MAPPINGS['smoker']['no'],
-    'health_condition': CATEGORY_MAPPINGS['health_condition']['good'],
+    'diet': 'average',
+    'sun_exposure': 'medium',
+    'pregnant': 'no',
+    'smoker': 'no',
+    'health_condition': 'good'
 }
 
-# ======================
-# 4. FLASK ROUTES
-# ======================
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
         if not model or not target_encoder:
-            return render_template('error.html', 
-                error="System not ready. Models failed to load.")
+            return render_template('error.html',
+                error="System initialization failed. Contact support.")
         
         try:
             # Process form data
-            input_data = {
+            form_data = {
                 'age': float(request.form['age']),
-                'gender': CATEGORY_MAPPINGS['gender'][request.form['gender']],
-                'diet': CATEGORY_MAPPINGS['diet'].get(
-                    request.form.get('diet', 'average'), 
-                    DEFAULTS['diet']),
-                'sun_exposure': CATEGORY_MAPPINGS['sun_exposure'].get(
-                    request.form.get('sun_exposure', 'medium'), 
-                    DEFAULTS['sun_exposure']),
-                'pregnant': CATEGORY_MAPPINGS['pregnant'].get(
-                    request.form.get('pregnant', 'no'), 
-                    DEFAULTS['pregnant']),
-                'smoker': CATEGORY_MAPPINGS['smoker'].get(
-                    request.form.get('smoker', 'no'), 
-                    DEFAULTS['smoker']),
-                'activity_level': CATEGORY_MAPPINGS['activity_level'][
-                    request.form['activity_level']],
-                'health_condition': CATEGORY_MAPPINGS['health_condition'].get(
-                    request.form.get('health_condition', 'good'), 
-                    DEFAULTS['health_condition']),
+                'gender': request.form['gender'],
+                'diet': request.form.get('diet', DEFAULTS['diet']),
+                'sun_exposure': request.form.get('sun_exposure', DEFAULTS['sun_exposure']),
+                'pregnant': request.form.get('pregnant', DEFAULTS['pregnant']),
+                'smoker': request.form.get('smoker', DEFAULTS['smoker']),
+                'activity_level': request.form['activity_level'],
+                'health_condition': request.form.get('health_condition', DEFAULTS['health_condition'])
             }
-
-            # Create DataFrame
-            input_df = pd.DataFrame([input_data])
             
-            # Predict
+            # Convert to model format
+            model_input = {
+                'age': form_data['age'],
+                'gender': CATEGORY_MAPPINGS['gender'][form_data['gender']],
+                'diet': CATEGORY_MAPPINGS['diet'][form_data['diet']],
+                'sun_exposure': CATEGORY_MAPPINGS['sun_exposure'][form_data['sun_exposure']],
+                'pregnant': CATEGORY_MAPPINGS['pregnant'][form_data['pregnant']],
+                'smoker': CATEGORY_MAPPINGS['smoker'][form_data['smoker']],
+                'activity_level': CATEGORY_MAPPINGS['activity_level'][form_data['activity_level']],
+                'health_condition': CATEGORY_MAPPINGS['health_condition'][form_data['health_condition']]
+            }
+            
+            # Create DataFrame
+            input_df = pd.DataFrame([model_input])
+            
+            # Make prediction
             prediction = model.predict(input_df)
             vitamin = target_encoder.inverse_transform(prediction)[0]
             
-            return render_template('result.html', 
-                prediction=f"Recommended Vitamin: {vitamin}")
+            return render_template('result.html', prediction=vitamin)
             
         except Exception as e:
-            return render_template('error.html', 
-                error=f"Prediction failed: {str(e)}")
+            return render_template('error.html',
+                error=f"Prediction error: {str(e)}")
     
     return render_template('form.html')
 
-# ======================
-# 5. START APPLICATION
-# ======================
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
