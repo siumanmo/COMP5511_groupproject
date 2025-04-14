@@ -26,33 +26,45 @@ except Exception as e:
     app.logger.error(traceback.format_exc())
     model = None
 
-# Define expected feature names (update these to match your model's exact requirements)
-FEATURE_NAMES = [
-    'age', 'sun_hours_per_week', 'vitamin_d_level', 'pregnant', 'smoker',
-    'gender_female', 'gender_male', 'gender_other',
-    'diet_omnivore', 'diet_pescatarian', 'diet_vegan', 'diet_vegetarian',
-    'sun_exposure_high', 'sun_exposure_low', 'sun_exposure_moderate',
-    'activity_level_lightly_active', 'activity_level_moderately_active',
-    'activity_level_sedentary', 'activity_level_very_active',
-    'health_condition_chronic_kidney', 'health_condition_malabsorption',
-    'health_condition_none', 'health_condition_osteoporosis'
-]
+# Define default values for each feature
+DEFAULT_VALUES = {
+    # Numeric features
+    'age': 30,
+    'sun_hours_per_week': 10,
+    'vitamin_d_level': 20,
+    'pregnant': 0,
+    'smoker': 0,
+    
+    # Categorical features
+    'gender': 'female',
+    'diet': 'omnivore',
+    'sun_exposure': 'moderate',
+    'activity_level': 'moderately_active',
+    'health_condition': 'none'
+}
+
+def get_feature_value(feature_name, form_data):
+    """Get feature value from form or use default"""
+    value = form_data.get(feature_name)
+    if value is None or value == '':
+        return DEFAULT_VALUES[feature_name]
+    return value
 
 def preprocess_input(form_data):
-    """Convert form data to model input format"""
+    """Convert form data to model input format with defaults for missing fields"""
     try:
-        # Convert numeric fields
+        # Process each field with fallback to defaults
         processed = {
-            'age': float(form_data.get('age', 0)),
-            'sun_hours_per_week': float(form_data.get('sun_hours_per_week', 0)),
-            'vitamin_d_level': float(form_data.get('vitamin_d_level', 0)),
-            'pregnant': int(form_data.get('pregnant', 0)),
-            'smoker': int(form_data.get('smoker', 0)),
-            'gender': form_data.get('gender', ''),
-            'diet': form_data.get('diet', ''),
-            'sun_exposure': form_data.get('sun_exposure', ''),
-            'activity_level': form_data.get('activity_level', ''),
-            'health_condition': form_data.get('health_condition', '')
+            'age': float(get_feature_value('age', form_data)),
+            'sun_hours_per_week': float(get_feature_value('sun_hours_per_week', form_data)),
+            'vitamin_d_level': float(get_feature_value('vitamin_d_level', form_data)),
+            'pregnant': int(get_feature_value('pregnant', form_data)),
+            'smoker': int(get_feature_value('smoker', form_data)),
+            'gender': get_feature_value('gender', form_data),
+            'diet': get_feature_value('diet', form_data),
+            'sun_exposure': get_feature_value('sun_exposure', form_data),
+            'activity_level': get_feature_value('activity_level', form_data),
+            'health_condition': get_feature_value('health_condition', form_data)
         }
         
         # Create one-hot encoded features
@@ -95,73 +107,42 @@ def preprocess_input(form_data):
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('index.html', default_values=DEFAULT_VALUES)
 
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
         if model is None:
-            app.logger.error("Model not loaded")
             return render_template('index.html', 
                                prediction_text='Model not loaded. Please try again later.',
-                               form_data=request.form.to_dict())
+                               form_data=request.form.to_dict(),
+                               default_values=DEFAULT_VALUES)
         
-        # Get and preprocess form data
         form_data = request.form.to_dict()
         app.logger.info(f"Received form data: {form_data}")
         
-        # Preprocess input
+        # Log which fields are missing and using defaults
+        for field in DEFAULT_VALUES:
+            if field not in form_data or form_data[field] == '':
+                app.logger.info(f"Using default value for {field}: {DEFAULT_VALUES[field]}")
+        
         input_features = preprocess_input(form_data)
-        
-        # Convert to DataFrame with correct feature names
         input_df = pd.DataFrame([input_features], columns=FEATURE_NAMES)
-        app.logger.info(f"Model input: {input_df.iloc[0].to_dict()}")
         
-        # Make prediction
         prediction = model.predict(input_df)[0]
-        app.logger.info(f"Prediction: {prediction}")
-        
         return render_template('index.html', 
                             prediction_text=f'Recommended Vitamin: {prediction}',
-                            form_data=form_data)
+                            form_data=form_data,
+                            default_values=DEFAULT_VALUES)
     
     except Exception as e:
         app.logger.error(f"Prediction error: {str(e)}")
-        app.logger.error(traceback.format_exc())
         return render_template('index.html', 
-                            prediction_text='Error making prediction. Please check your inputs and try again.',
-                            form_data=request.form.to_dict())
+                            prediction_text='Error making prediction. Please check your inputs.',
+                            form_data=request.form.to_dict(),
+                            default_values=DEFAULT_VALUES)
 
-@app.route('/predict_api', methods=['POST'])
-def predict_api():
-    try:
-        if model is None:
-            return jsonify({'error': 'Model not loaded'}), 500
-        
-        data = request.get_json(force=True)
-        app.logger.info(f"API request data: {data}")
-        
-        # Preprocess input
-        input_features = preprocess_input(data)
-        
-        # Convert to DataFrame with correct feature names
-        input_df = pd.DataFrame([input_features], columns=FEATURE_NAMES)
-        
-        # Make prediction
-        prediction = model.predict(input_df)[0]
-        
-        return jsonify({
-            'recommended_vitamin': prediction,
-            'status': 'success'
-        })
-    
-    except Exception as e:
-        app.logger.error(f"API error: {str(e)}")
-        app.logger.error(traceback.format_exc())
-        return jsonify({
-            'error': str(e),
-            'status': 'failed'
-        }), 400
+# ... (keep the rest of your existing code, like predict_api)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=10000)
