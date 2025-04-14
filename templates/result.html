@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vitamin Recommendation System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="static/favicon-32x32.png">
+    <link rel="manifest" href="/site.webmanifest">
+</head>
+<body>
+    <div class="container result-container">
+        <h1>Your Personalized Vitamin Recommendation</h1>
+        
+        <div class="recommendation-card">
+            <h2>Recommended Vitamin:</h2>
+            <div class="vitamin-result">{{ recommendation }}</div>
+            <p class="confidence">Confidence: {{ confidence }}</p>
+        </div>
+        
+        <div class="user-input-summary">
+            <h3>Your Input:</h3>
+            <ul>
+                <li><strong>Age:</strong> {{ user_input.age }}</li>
+                <li><strong>Gender:</strong> {{ user_input.gender }}</li>
+                <li><strong>Diet:</strong> {{ user_input.diet }}</li>
+                <li><strong>Sun Exposure:</strong> {{ user_input.sun_exposure }}</li>
+                <li><strong>Activity Level:</strong> {{ user_input.activity_level }}</li>
+                <li><strong>Health Condition:</strong> {{ user_input.health_condition }}</li>
+                <li><strong>Sun Hours Per Week:</strong> {{ user_input.sun_hours_per_week }}</li>
+                <li><strong>Vitamin D Level:</strong> {{ user_input.vitamin_d_level }} ng/mL</li>
+                <li><strong>Pregnant:</strong> {{ 'Yes' if user_input.pregnant else 'No' }}</li>
+                <li><strong>Smoker:</strong> {{ 'Yes' if user_input.smoker else 'No' }}</li>
+            </ul>
+        </div>
+        
+        <a href="/" class="back-btn">Again</a>
+    </div>
+</body>
+</html>

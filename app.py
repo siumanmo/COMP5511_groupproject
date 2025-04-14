@@ -1,70 +1,44 @@
-from flask import Flask, request, render_template
-import pickle
+from flask import Flask, render_template, request
 import pandas as pd
-import logging
-
-# Set up logging
-logging.basicConfig(level=logging.INFO, 
-                    format='%(asctime)s %(levelname)s:%(message)s',
-                    handlers=[logging.FileHandler("app.log"),
-                              logging.StreamHandler()])
+import pickle
+import os
 
 app = Flask(__name__)
 
-# Load the trained model
-try:
-    with open('model.pkl', 'rb') as f:
-        model = pickle.load(f)
-        logging.info("Model loaded successfully.")
-except Exception as e:
-    logging.error(f"Error loading model: {str(e)}")
-    raise
+# Load the model
+with open('model.pkl', 'rb') as f:
+    model = pickle.load(f)
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
+    if request.method == 'POST':
+        # Get user input from form
+        user_data = {
+            'age': int(request.form['age']),
+            'gender': request.form['gender'],
+            'diet': request.form['diet'],
+            'sun_exposure': request.form['sun_exposure'],
+            'activity_level': request.form['activity_level'],
+            'health_condition': request.form['health_condition'],
+            'sun_hours_per_week': int(request.form['sun_hours_per_week']),
+            'vitamin_d_level': float(request.form['vitamin_d_level']),
+            'pregnant': int(request.form.get('pregnant', 0)),
+            'smoker': int(request.form.get('smoker', 0))
+        }
+        
+        # Convert to DataFrame for prediction
+        input_df = pd.DataFrame([user_data])
+
+        # Make prediction
+        prediction = model.predict(input_df)[0]
+        probability = model.predict_proba(input_df).max()
+        
+        return render_template('result.html', 
+                             recommendation=prediction,
+                             confidence=f"{probability*100:.1f}%",
+                             user_input=user_data)
+    
     return render_template('index.html')
 
-@app.route('/predict', methods=['POST'])
-def predict():
-    input_data = request.form.to_dict()
-    logging.info(f"Received input data: {input_data}")
-
-    # Extract health conditions
-    health_conditions = request.form.getlist('health_conditions')
-    if not health_conditions:
-        health_conditions = ['none']
-
-    # Combine selected health conditions into a string
-    input_data['health_condition'] = ', '.join(health_conditions)
-
-    # Set defaults for omitted fields if they are important for the model
-    input_data.setdefault('sun_hours_per_week', 0)
-    input_data.setdefault('pregnant', 0)
-    input_data.setdefault('smoker', 0)  
-
-    # Convert input data to DataFrame
-    df_input = pd.DataFrame(input_data, index=[0])
-    
-    # Ensure numeric columns are in correct dtype
-    numeric_columns = ['age', 'sun_hours_per_week', 'vitamin_d_level', 'pregnant', 'smoker']
-    
-    try:
-        # Convert appropriate columns to numeric
-        df_input[numeric_columns] = df_input[numeric_columns].apply(pd.to_numeric, errors='coerce')
-
-        # Log the DataFrame before prediction
-        logging.info(f"Input DataFrame for prediction:\n{df_input}")
-
-        # Making the prediction
-        prediction = model.predict(df_input)
-        logging.info(f"Prediction made: {prediction[0]}")
-        return render_template('index.html', prediction=prediction[0])
-    
-    except Exception as e:
-        logging.error(f"Error making prediction: {str(e)}")
-        logging.error(f"Data Used for Prediction: {df_input}")
-        # Return a relevant error message to the HTML template
-        return render_template('index.html', error="Error making prediction. Please check your input.")
-
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)
+    app.run(debug=True)
