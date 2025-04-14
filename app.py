@@ -18,6 +18,7 @@ try:
         logging.info("Model loaded successfully.")
 except Exception as e:
     logging.error(f"Error loading model: {str(e)}")
+    raise
 
 @app.route('/')
 def index():
@@ -62,7 +63,8 @@ def predict():
     except Exception as e:
         logging.error(f"Error making prediction: {str(e)}")
         logging.error(f"Data Used for Prediction: {df_input}")
-        return "Error making prediction. Check logs for details."
+        # Return a relevant error message to the HTML template
+        return render_template('index.html', error="Error making prediction. Please check your input.")
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
