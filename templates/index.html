@@ -1,126 +1,180 @@
+<!-- templates/index.html -->
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Vitamin Recommendation System</title>
+    <title>Vitamin Recommendation</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            max-width: 800px;
+            max-width: 600px;
             margin: 0 auto;
             padding: 20px;
-            line-height: 1.6;
         }
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         label {
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
         }
-        input, select {
+        input[type="range"] {
+            width: 100%;
+        }
+        .range-value {
+            display: inline-block;
+            width: 50px;
+            text-align: right;
+        }
+        select, button {
             width: 100%;
             padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
+            margin-top: 5px;
         }
         button {
             background-color: #4CAF50;
             color: white;
-            padding: 10px 15px;
             border: none;
-            border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
-        }
-        button:hover {
-            background-color: #45a049;
+            padding: 12px;
         }
         .result {
             margin-top: 20px;
             padding: 15px;
-            border-radius: 4px;
-            background-color: #f8f9fa;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
+        .binary-options {
+            display: flex;
+            gap: 10px;
+        }
+        .binary-option {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            background: #eee;
+            cursor: pointer;
+        }
+        .binary-option.selected {
+            background: #4CAF50;
+            color: white;
+        }
+        input[type="radio"] {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <h1>Vitamin Recommendation System</h1>
-    <p>Fill in the form to get a personalized vitamin recommendation:</p>
+    <h1>Vitamin Recommendation</h1>
     
     <form action="/predict" method="post">
+        <!-- Age Slider -->
         <div class="form-group">
-            <label for="age">Age:</label>
-            <input type="number" id="age" name="age" value="{{ form_data.age if form_data }}" required>
+            <label for="age">Age: <span class="range-value">{{ form_data.age if form_data else config.age.default }}</span></label>
+            <input type="range" id="age" name="age" 
+                   min="{{ config.age.min }}" max="{{ config.age.max }}" 
+                   step="{{ config.age.step }}" 
+                   value="{{ form_data.age if form_data else config.age.default }}"
+                   oninput="document.querySelector('.range-value').textContent = this.value">
         </div>
         
+        <!-- Gender Dropdown -->
         <div class="form-group">
             <label for="gender">Gender:</label>
-            <select id="gender" name="gender" required>
-                <option value="male" {% if form_data and form_data.gender == 'male' %}selected{% endif %}>Male</option>
-                <option value="female" {% if form_data and form_data.gender == 'female' %}selected{% endif %}>Female</option>
-                <option value="other" {% if form_data and form_data.gender == 'other' %}selected{% endif %}>Other</option>
+            <select id="gender" name="gender">
+                {% for option in config.gender.options %}
+                <option value="{{ option }}" 
+                        {% if form_data and form_data.gender == option %}selected{% endif %}
+                        {% if not form_data and option == config.gender.default %}selected{% endif %}>
+                    {{ option|capitalize }}
+                </option>
+                {% endfor %}
             </select>
         </div>
         
+        <!-- Diet Dropdown -->
         <div class="form-group">
             <label for="diet">Diet:</label>
-            <select id="diet" name="diet" required>
-                <option value="omnivore" {% if form_data and form_data.diet == 'omnivore' %}selected{% endif %}>Omnivore</option>
-                <option value="vegetarian" {% if form_data and form_data.diet == 'vegetarian' %}selected{% endif %}>Vegetarian</option>
-                <option value="vegan" {% if form_data and form_data.diet == 'vegan' %}selected{% endif %}>Vegan</option>
-                <option value="pescatarian" {% if form_data and form_data.diet == 'pescatarian' %}selected{% endif %}>Pescatarian</option>
+            <select id="diet" name="diet">
+                {% for option in config.diet.options %}
+                <option value="{{ option }}"
+                        {% if form_data and form_data.diet == option %}selected{% endif %}
+                        {% if not form_data and option == config.diet.default %}selected{% endif %}>
+                    {{ option|capitalize }}
+                </option>
+                {% endfor %}
             </select>
         </div>
         
+        <!-- Sun Exposure Dropdown -->
         <div class="form-group">
             <label for="sun_exposure">Sun Exposure:</label>
-            <select id="sun_exposure" name="sun_exposure" required>
-                <option value="low" {% if form_data and form_data.sun_exposure == 'low' %}selected{% endif %}>Low</option>
-                <option value="moderate" {% if form_data and form_data.sun_exposure == 'moderate' %}selected{% endif %}>Moderate</option>
-                <option value="high" {% if form_data and form_data.sun_exposure == 'high' %}selected{% endif %}>High</option>
+            <select id="sun_exposure" name="sun_exposure">
+                {% for option in config.sun_exposure.options %}
+                <option value="{{ option }}"
+                        {% if form_data and form_data.sun_exposure == option %}selected{% endif %}
+                        {% if not form_data and option == config.sun_exposure.default %}selected{% endif %}>
+                    {{ option|capitalize }}
+                </option>
+                {% endfor %}
             </select>
         </div>
         
-        <div class="form-group">
-            <label for="sun_hours_per_week">Sun Hours Per Week:</label>
-            <input type="number" id="sun_hours_per_week" name="sun_hours_per_week" step="0.1" value="{{ form_data.sun_hours_per_week if form_data }}" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="vitamin_d_level">Vitamin D Level (ng/mL):</label>
-            <input type="number" id="vitamin_d_level" name="vitamin_d_level" step="0.1" value="{{ form_data.vitamin_d_level if form_data }}" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="activity_level">Activity Level:</label>
-            <select id="activity_level" name="activity_level" required>
-                <option value="sedentary" {% if form_data and form_data.activity_level == 'sedentary' %}selected{% endif %}>Sedentary</option>
-                <option value="lightly_active" {% if form_data and form_data.activity_level == 'lightly_active' %}selected{% endif %}>Lightly Active</option>
-                <option value="moderately_active" {% if form_data and form_data.activity_level == 'moderately_active' %}selected{% endif %}>Moderately Active</option>
-                <option value="very_active" {% if form_data and form_data.activity_level == 'very_active' %}selected{% endif %}>Very Active</option>
-            </select>
-        </div>
-        
+        <!-- Health Condition Dropdown -->
         <div class="form-group">
             <label for="health_condition">Health Condition:</label>
-            <select id="health_condition" name="health_condition" required>
-                <option value="none" {% if form_data and form_data.health_condition == 'none' %}selected{% endif %}>None</option>
-                <option value="osteoporosis" {% if form_data and form_data.health_condition == 'osteoporosis' %}selected{% endif %}>Osteoporosis</option>
-                <option value="malabsorption" {% if form_data and form_data.health_condition == 'malabsorption' %}selected{% endif %}>Malabsorption</option>
-                <option value="chronic_kidney" {% if form_data and form_data.health_condition == 'chronic_kidney' %}selected{% endif %}>Chronic Kidney Disease</option>
+            <select id="health_condition" name="health_condition">
+                {% for option in config.health_condition.options %}
+                <option value="{{ option }}"
+                        {% if form_data and form_data.health_condition == option %}selected{% endif %}
+                        {% if not form_data and option == config.health_condition.default %}selected{% endif %}>
+                    {{ option.replace('_', ' ')|title }}
+                </option>
+                {% endfor %}
             </select>
         </div>
         
+        <!-- Activity Level Dropdown -->
         <div class="form-group">
-            <label for="pregnant">Pregnant (1 for yes, 0 for no):</label>
-            <input type="number" id="pregnant" name="pregnant" min="0" max="1" value="{{ form_data.pregnant if form_data else '0' }}" required>
+            <label for="activity_level">Activity Level:</label>
+            <select id="activity_level" name="activity_level">
+                {% for option in config.activity_level.options %}
+                <option value="{{ option }}"
+                        {% if form_data and form_data.activity_level == option %}selected{% endif %}
+                        {% if not form_data and option == config.activity_level.default %}selected{% endif %}>
+                    {{ option.replace('_', ' ')|title }}
+                </option>
+                {% endfor %}
+            </select>
         </div>
         
+        <!-- Pregnant Binary Options -->
         <div class="form-group">
-            <label for="smoker">Smoker (1 for yes, 0 for no):</label>
-            <input type="number" id="smoker" name="smoker" min="0" max="1" value="{{ form_data.smoker if form_data else '0' }}" required>
+            <label>Pregnant:</label>
+            <div class="binary-options">
+                {% for option in config.pregnant.options %}
+                <label class="binary-option {% if (form_data and form_data.pregnant == option) or (not form_data and option == config.pregnant.default) %}selected{% endif %}">
+                    <input type="radio" name="pregnant" value="{{ option }}"
+                           {% if (form_data and form_data.pregnant == option) or (not form_data and option == config.pregnant.default) %}checked{% endif %}>
+                    {{ option }}
+                </label>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- Smoker Binary Options -->
+        <div class="form-group">
+            <label>Smoker:</label>
+            <div class="binary-options">
+                {% for option in config.smoker.options %}
+                <label class="binary-option {% if (form_data and form_data.smoker == option) or (not form_data and option == config.smoker.default) %}selected{% endif %}">
+                    <input type="radio" name="smoker" value="{{ option }}"
+                           {% if (form_data and form_data.smoker == option) or (not form_data and option == config.smoker.default) %}checked{% endif %}>
+                    {{ option }}
+                </label>
+                {% endfor %}
+            </div>
         </div>
         
         <button type="submit">Get Vitamin Recommendation</button>
@@ -128,9 +182,22 @@
     
     {% if prediction_text %}
     <div class="result">
-        <h2>Result:</h2>
+        <h2>Recommendation:</h2>
         <p>{{ prediction_text }}</p>
     </div>
     {% endif %}
+    
+    <script>
+        // Make binary options interactive
+        document.querySelectorAll('.binary-option').forEach(option => {
+            option.addEventListener('click', function() {
+                this.parentNode.querySelectorAll('.binary-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                this.classList.add('selected');
+                this.querySelector('input[type="radio"]').checked = true;
+            });
+        });
+    </script>
 </body>
 </html>
