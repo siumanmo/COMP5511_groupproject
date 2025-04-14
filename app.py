@@ -1,75 +1,58 @@
-from flask import Flask, request, render_template
-import pickle
+from flask import Flask, render_template, request, jsonify
 import pandas as pd
-import os
-import logging
+import pickle
+import numpy as np
 
 app = Flask(__name__)
 
-# Configure logging
-logging.basicConfig(level=logging.DEBUG)  # Set to DEBUG for detailed logs
+# Load the model
+with open('model.pkl', 'rb') as f:
+    model = pickle.load(f)
 
-# Load your model
-model_path = os.path.join(os.path.dirname(__file__), 'model.pkl')
-if os.path.exists(model_path):
-    try:
-        with open(model_path, 'rb') as f:
-            model = pickle.load(f)
-        app.logger.info("Model loaded successfully.")
-    except Exception as e:
-        app.logger.error(f"Failed to load the model: {str(e)}")
-        raise RuntimeError(f"Failed to load the model: {str(e)}")
-else:
-    app.logger.error(f"Model file not found at {model_path}")
-    raise RuntimeError(f"Model file not found at {model_path}")
+# Define feature names in the order the model expects them
+feature_names = ['age', 'sun_hours_per_week', 'vitamin_d_level', 'pregnant', 'smoker',
+                 'gender', 'diet', 'sun_exposure', 'activity_level', 'health_condition']
 
 @app.route('/')
 def home():
-    app.logger.info("Home page accessed")
     return render_template('index.html')
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    app.logger.info("Prediction request received with form data: %s", request.form)
-    
     try:
-        # Extract form data with validation
-        gender = request.form['gender']
-        diet = request.form['diet']
-        sun_exposure = request.form['sun_exposure']
-        activity_level = request.form['activity_level']
-        health_condition = request.form['health_condition']
-        age = float(request.form['age'])
-        sun_hours_per_week = float(request.form['sun_hours_per_week'])
-        vitamin_d_level = float(request.form['vitamin_d_level'])
-        pregnant = int(request.form['pregnant'])
-        smoker = int(request.form['smoker'])
-
-        # Create a DataFrame for input
-        input_data = pd.DataFrame({
-            'gender': [gender],
-            'diet': [diet],
-            'sun_exposure': [sun_exposure],
-            'activity_level': [activity_level],
-            'health_condition': [health_condition],
-            'age': [age],
-            'sun_hours_per_week': [sun_hours_per_week],
-            'vitamin_d_level': [vitamin_d_level],
-            'pregnant': [pregnant],
-            'smoker': [smoker]
-        })
+        # Get data from form
+        data = request.form.to_dict()
         
-        app.logger.debug(f"Input DataFrame created: {input_data}")
-
+        # Convert to DataFrame with correct column order
+        input_data = pd.DataFrame([data], columns=feature_names)
+        
         # Make prediction
-        prediction = model.predict(input_data)
-        app.logger.info(f"Prediction: {prediction[0]}")
+        prediction = model.predict(input_data)[0]
         
-        return render_template('index.html', prediction=prediction[0])
+        return render_template('index.html', 
+                             prediction_text=f'Recommended Vitamin: {prediction}',
+                             form_data=data)
     
     except Exception as e:
-        app.logger.error(f"Error occurred during prediction: {str(e)}")
-        return f"Error: {str(e)}", 500
+        return render_template('index.html', 
+                             prediction_text=f'Error: {str(e)}')
+
+@app.route('/predict_api', methods=['POST'])
+def predict_api():
+    try:
+        # Get JSON data
+        data = request.get_json(force=True)
+        
+        # Convert to DataFrame with correct column order
+        input_data = pd.DataFrame([data], columns=feature_names)
+        
+        # Make prediction
+        prediction = model.predict(input_data)[0]
+        
+        return jsonify({'recommended_vitamin': prediction})
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
 
 if __name__ == '__main__':
     app.run(debug=True)
