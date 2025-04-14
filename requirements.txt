@@ -1,5 +1,5 @@
-numpy==1.24.0  # Most stable version for deployment
-scikit-learn==1.2.2  # Compatible with numpy 1.24
-pandas==1.5.3  # Works with this stack
+numpy==1.23.5  # Most stable version that avoids _core issues
+scikit-learn==1.1.3  # Compatible with numpy 1.23
+pandas==1.5.0
 flask==2.2.5
 gunicorn==20.1.0
