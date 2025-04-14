@@ -8,27 +8,24 @@
 </head>
 <body>
     <h1>Vitamin Recommendation Form</h1>
+    
     <form action="/predict" method="POST">
         <label for="age">Age:</label><br>
         <input type="number" id="age" name="age" required><br>
-        <label for="sun_hours_per_week">Sun Hours Per Week:</label><br>
-        <input type="number" id="sun_hours_per_week" name="sun_hours_per_week" required><br>
-        <label for="vitamin_d_level">Vitamin D Level:</label><br>
-        <input type="number" id="vitamin_d_level" name="vitamin_d_level" required><br>
-        <label for="pregnant">Pregnant (1/0):</label><br>
-        <input type="number" id="pregnant" name="pregnant" required><br>
-        <label for="smoker">Smoker (1/0):</label><br>
-        <input type="number" id="smoker" name="smoker" required><br>
+        
         <label for="gender">Gender:</label><br>
-        <input type="text" id="gender" name="gender" required><br>
-        <label for="diet">Diet:</label><br>
-        <input type="text" id="diet" name="diet" required><br>
-        <label for="sun_exposure">Sun Exposure:</label><br>
-        <input type="text" id="sun_exposure" name="sun_exposure" required><br>
-        <label for="activity_level">Activity Level:</label><br>
-        <input type="text" id="activity_level" name="activity_level" required><br>
+        <select id="gender" name="gender" required>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+        </select><br>
+
         <label for="health_condition">Health Condition:</label><br>
-        <input type="text" id="health_condition" name="health_condition" required><br><br>
+        <input type="text" id="health_condition" name="health_condition" required><br>
+
+        <label for="vitamin_d_level">Vitamin D Level (optional):</label><br>
+        <input type="number" id="vitamin_d_level" name="vitamin_d_level"><br>
+
         <input type="submit" value="Get Recommendation">
     </form>
 

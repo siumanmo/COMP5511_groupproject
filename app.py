@@ -29,6 +29,11 @@ def index():
 def predict():
     input_data = request.form.to_dict()
     logging.info(f"Received input data: {input_data}")
+
+    # Set defaults for omitted fields if they are important for the model
+    input_data.setdefault('sun_hours_per_week', 0)  # Default to 0 if not provided
+    input_data.setdefault('pregnant', 0)  # Default to 0 if not provided
+    input_data.setdefault('smoker', 0)  # Default to 0 if not provided
     
     # Convert input data to DataFrame or suitable format for prediction
     df_input = pd.DataFrame(input_data, index=[0])
