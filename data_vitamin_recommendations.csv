@@ -1,0 +1,251 @@
+age,gender,diet,sun_exposure,pregnant,smoker,activity_level,health_condition,sun_hours_per_week,vitamin_d_level,recommended_vitamin
+56,Male,Omnivore,Medium,0,0,Active,None,10.584925671987936,39.65033586814315,Daily Essentials
+69,Male,Vegan,Medium,0,0,Sedentary,None,14.213478891408478,25.831158940547468,B12
+46,Female,Omnivore,Medium,0,0,Light,None,9.899385376355802,27.86970813376709,Multivitamin
+32,Female,Omnivore,Medium,0,0,Light,None,16.584909104000754,37.6699768219123,Multivitamin
+60,Female,Omnivore,Medium,0,1,Moderate,None,17.236212592036203,22.075057356726255,Vitamin C
+25,Male,Omnivore,Medium,0,0,Light,None,12.342252012122163,43.41770190477592,Multivitamin
+38,Female,Vegan,Medium,0,0,Moderate,None,13.03309086105944,15.50828967667961,B-Complex
+56,Female,Vegetarian,Medium,1,0,Moderate,None,15.446252688705645,22.39191475569974,Prenatal
+36,Male,Vegetarian,Medium,0,1,Moderate,Diabetes,11.405687810207347,41.43564809074539,Vitamin D
+40,Male,Pescatarian,High,0,1,Light,Osteoporosis,20.490307775413967,27.220994321563253,Calcium+D
+28,Male,Omnivore,Medium,0,0,Active,None,18.715896144123363,31.459467419133762,Omega-3
+28,Female,Omnivore,Low,0,1,Moderate,Anemia,1.0,19.068229407562356,Multivitamin
+41,Female,Pescatarian,Medium,0,0,Moderate,Osteoporosis,13.325671926882132,37.10503516596087,Calcium+D
+70,Female,Omnivore,Medium,0,1,Sedentary,None,9.923643334328343,31.79864738232939,Vitamin C
+53,Male,Omnivore,High,0,0,Active,Heart Disease,26.562452710917448,26.116107550019777,Multivitamin
+57,Female,Omnivore,Low,0,1,Sedentary,Diabetes,6.238074396572587,18.431776577501854,Vitamin C
+41,Female,Vegetarian,Low,0,0,Sedentary,Diabetes,4.083726025572531,11.094451220426265,Vitamin D
+20,Male,Vegetarian,Medium,0,0,Sedentary,None,17.577930293080335,31.49407005818714,Daily Essentials
+39,Female,Omnivore,Medium,0,1,Moderate,Diabetes,12.575574436778194,39.768897274541146,Antioxidant Blend
+70,Female,Omnivore,High,1,0,Sedentary,None,21.97798666160098,34.53555114986276,Multivitamin
+19,Female,Vegan,Low,0,0,Sedentary,Diabetes,2.1108851129504056,13.48328256851501,B-Complex
+41,Male,Pescatarian,High,0,0,Sedentary,Diabetes,27.54517267375444,34.43094499563804,Multivitamin
+61,Male,Omnivore,Low,0,0,Sedentary,Heart Disease,5.058093544763488,22.49717520377861,Vitamin D
+47,Female,Vegetarian,High,1,0,Moderate,Diabetes,29.110817626422758,23.53275538218765,Prenatal
+55,Female,Pescatarian,Low,0,0,Moderate,Heart Disease,3.9246206051442742,23.29252150225589,Vitamin D
+19,Male,Pescatarian,Low,0,0,Light,None,5.60688950184809,15.59811254509839,Vitamin D
+38,Male,Pescatarian,Medium,0,0,Light,None,14.772529135445211,37.276925910191196,Multivitamin
+50,Female,Vegetarian,High,0,1,Moderate,Osteoporosis,26.119370643990436,26.9793866450328,Calcium+D
+29,Male,Omnivore,High,0,0,Sedentary,None,19.09068783637544,26.38075262329427,Multivitamin
+39,Female,Omnivore,Medium,0,0,Light,None,12.345550899931059,26.180845660946385,Multivitamin
+61,Female,Omnivore,High,0,0,Active,None,30.924954194355216,35.197919701572346,Multivitamin
+42,Female,Pescatarian,Low,0,0,Moderate,None,8.124919013724229,30.17204316618841,D3+K2
+66,Female,Omnivore,High,0,1,Sedentary,Anemia,27.392230785811634,33.493002266880346,Iron
+44,Male,Omnivore,Medium,0,0,Moderate,Diabetes,16.903620864171675,30.942974099212908,Daily Essentials
+59,Female,Omnivore,Medium,0,0,Light,Anemia,16.73972690241576,27.33506785420337,B-Complex
+45,Female,Omnivore,High,1,1,Moderate,Diabetes,29.359342145801733,31.97623887350116,B-Complex
+33,Male,Omnivore,Medium,0,1,Sedentary,None,12.565530966799427,25.079269679422744,Vitamin C
+32,Male,Vegan,Medium,0,0,Sedentary,None,16.166160369153324,22.644205914386355,B-Complex
+64,Female,Omnivore,Medium,0,1,Sedentary,Diabetes,17.181959541062145,39.820954140674694,Omega-3
+68,Female,Omnivore,High,0,1,Active,None,33.87495870880337,23.965123977827346,Vitamin C
+61,Male,Vegetarian,Low,0,0,Moderate,Osteoporosis,3.24471516048085,15.031023388718378,Calcium+D
+72,Female,Omnivore,High,0,1,Sedentary,Osteoporosis,24.13122659975614,33.93814470377575,Calcium+D
+69,Female,Vegan,Medium,0,1,Sedentary,None,17.720573085377204,24.2904324316564,Vitamin C
+74,Female,Omnivore,Low,0,0,Moderate,Anemia,4.6575016491258285,24.689155104830586,B-Complex
+20,Female,Omnivore,Medium,0,0,Sedentary,Osteoporosis,17.419692530042997,22.83773407403503,Calcium+D
+54,Male,Omnivore,Medium,0,0,Sedentary,Heart Disease,15.61814855363854,28.191921301850694,Omega-3
+68,Male,Vegan,Medium,0,1,Active,None,14.44450431307538,18.10820088273334,Multivitamin
+24,Female,Pescatarian,Medium,0,1,Sedentary,None,10.221591601942542,29.770733835172074,Vitamin C
+38,Female,Omnivore,Low,0,0,Moderate,Diabetes,5.911379337334503,15.146643256933373,Vitamin D
+26,Female,Omnivore,Medium,0,0,Active,None,7.220561446974774,14.775668423580695,D3+K2
+56,Male,Omnivore,High,0,0,Light,None,21.142821440974526,27.531661019835056,Multivitamin
+35,Female,Omnivore,Medium,0,0,Sedentary,Heart Disease,21.834746109543744,27.09570218167789,Multivitamin
+21,Female,Omnivore,Medium,0,0,Sedentary,None,11.136157831446,22.459431930626163,Multivitamin
+42,Female,Omnivore,Medium,0,0,Active,Diabetes,7.105704349740281,33.5129444624977,Multivitamin
+31,Female,Vegan,Medium,0,1,Active,Anemia,17.888006758756596,23.79475907335563,Vitamin D
+67,Female,Omnivore,Medium,0,0,Moderate,Osteoporosis,22.091153607890103,22.20063432422205,Calcium+D
+26,Female,Omnivore,Medium,0,1,Sedentary,None,15.893763195779409,35.106415284123685,Vitamin C
+43,Male,Vegan,Low,0,0,Moderate,Osteoporosis,3.289338971221483,12.809154264565331,Calcium+D
+70,Female,Omnivore,Medium,0,0,Active,None,14.070353779068746,29.543419388328246,Multivitamin
+19,Female,Omnivore,Low,0,0,Moderate,None,8.34787683624504,15.477237814578912,Vitamin D
+37,Male,Omnivore,Low,1,0,Active,Diabetes,5.857624629241395,10.0,Prenatal
+45,Male,Omnivore,Low,0,1,Active,None,5.394600839985704,18.665468675683922,Vitamin C
+64,Female,Omnivore,Low,0,0,Moderate,None,4.177158054681259,16.376132633604126,Vitamin D
+24,Male,Omnivore,Medium,0,1,Moderate,Diabetes,14.654481216690174,29.393767338708464,Vitamin C
+61,Female,Omnivore,Medium,0,0,Light,None,17.487974471784476,31.87829825947888,Multivitamin
+25,Male,Vegan,Medium,0,1,Sedentary,None,13.254486504248938,14.166233831461449,B12
+64,Male,Omnivore,Low,0,0,Moderate,None,1.0,13.377513953721984,D3+K2
+52,Female,Omnivore,High,1,1,Light,Heart Disease,20.24370853678461,25.505140411838394,Prenatal
+31,Male,Vegetarian,Medium,0,1,Active,Diabetes,18.114718778597272,24.81624529898872,Vitamin C
+34,Male,Omnivore,Medium,0,0,Active,None,15.25910270122027,21.699278891588065,Daily Essentials
+53,Female,Omnivore,High,1,0,Moderate,None,27.952321499638604,26.76007418564586,Prenatal
+67,Female,Omnivore,High,0,1,Sedentary,None,25.44355791555107,23.448147152003074,Vitamin C
+57,Male,Pescatarian,Low,1,1,Sedentary,None,4.451543285890938,17.756965525635923,Omega-3
+21,Female,Omnivore,Medium,0,0,Sedentary,Heart Disease,15.339402713039915,30.12568419315086,Multivitamin
+19,Female,Omnivore,High,0,1,Moderate,None,23.342167592918695,23.52554699959214,Vitamin C
+23,Female,Vegetarian,Medium,0,1,Moderate,None,14.73835320475305,33.534836154167834,Antioxidant Blend
+71,Male,Pescatarian,Low,0,1,Active,Heart Disease,3.0918765045073555,15.911101012841101,Vitamin C
+59,Female,Pescatarian,Medium,0,1,Light,Diabetes,11.629451385267512,32.14703009202614,Vitamin C
+21,Female,Vegan,High,0,1,Active,Diabetes,22.36690622719473,24.149262630176818,B12
+71,Female,Omnivore,Medium,0,0,Active,None,16.044816679208175,41.922785824020636,Multivitamin
+46,Female,Vegetarian,Medium,1,0,Light,None,11.454171447217437,34.48154081442635,Prenatal
+35,Male,Vegetarian,High,0,0,Active,None,25.631003124118863,41.7385095191307,Multivitamin
+43,Male,Vegan,Low,0,1,Light,None,5.347832167667526,19.558509010656092,B12
+61,Female,Vegan,Low,0,1,Sedentary,Heart Disease,4.6614982318873865,15.756158877556846,B12
+51,Female,Pescatarian,Medium,0,0,Moderate,Osteoporosis,17.06358998156105,31.231601361606508,B-Complex
+27,Female,Omnivore,High,0,1,Light,Heart Disease,21.11998412996383,28.426223926861002,Multivitamin
+53,Male,Omnivore,Medium,0,1,Moderate,Heart Disease,13.869014522498892,32.24088712639296,Vitamin C
+31,Female,Omnivore,Medium,0,0,Moderate,None,16.727339347999358,25.747289518520766,Multivitamin
+48,Female,Pescatarian,Medium,0,0,Moderate,Heart Disease,18.229115985723542,32.60328510540139,Multivitamin
+65,Female,Pescatarian,Medium,0,0,Light,None,16.77705576332452,14.239282455895736,Vitamin D
+32,Male,Vegetarian,Medium,0,0,Moderate,Diabetes,12.989249934821288,30.257593471286476,Multivitamin
+25,Female,Omnivore,High,0,0,Moderate,None,27.523263396578475,38.0680567206128,Daily Essentials
+31,Female,Vegetarian,Medium,0,0,Moderate,None,18.396104958885108,30.565851473573794,Daily Essentials
+40,Male,Omnivore,Medium,1,0,Light,None,21.59729454167011,40.36489642818593,Prenatal
+74,Female,Vegetarian,Medium,0,0,Sedentary,Anemia,14.384361076502412,28.41752767290837,Iron
+57,Female,Omnivore,Medium,0,0,Moderate,None,17.573649318394292,36.015905477926964,Multivitamin
+38,Female,Omnivore,Medium,0,0,Sedentary,None,18.403441560252958,24.730379557959804,B-Complex
+33,Male,Vegan,Medium,0,1,Moderate,None,12.562785003030708,22.1754934393159,B12
+62,Female,Vegan,Medium,1,0,Moderate,Heart Disease,20.346234954184443,20.339993670659524,Prenatal
+35,Female,Omnivore,Low,0,1,Moderate,Diabetes,4.990601191119655,18.049655098666356,Antioxidant Blend
+64,Female,Vegan,Low,0,1,Moderate,Heart Disease,5.892000189334372,29.449028987302295,Vitamin C
+70,Male,Omnivore,Medium,0,0,Active,None,15.915959338641198,28.4737393451667,Multivitamin
+41,Male,Vegetarian,Medium,0,0,Active,Diabetes,15.166726679994479,31.280718115678862,Daily Essentials
+43,Male,Vegan,Medium,1,0,Active,None,22.640499844345932,19.30781261949195,Iron
+42,Male,Omnivore,Medium,0,0,Active,Osteoporosis,14.096234294019597,39.36569879459441,Calcium+D
+62,Female,Omnivore,Medium,0,0,Sedentary,Diabetes,14.047963221814175,42.21019620819547,Multivitamin
+58,Male,Vegan,Low,0,0,Sedentary,None,3.353763877303841,18.93582010243081,B12
+46,Male,Vegetarian,High,0,0,Moderate,None,21.030566854037946,26.627458048174834,Multivitamin
+32,Female,Vegetarian,Medium,0,0,Sedentary,None,18.846296762875664,28.171175462893565,Multivitamin
+62,Female,Pescatarian,Medium,1,0,Light,None,15.35060814702334,34.433492826262096,Prenatal
+18,Male,Omnivore,Medium,1,0,Light,None,15.95082785103649,33.11768675908681,Prenatal
+42,Male,Omnivore,High,0,0,Moderate,Diabetes,30.91954439965536,39.77007575634817,Daily Essentials
+24,Female,Pescatarian,Medium,0,0,Moderate,None,12.492137761257911,44.87633651225947,Multivitamin
+26,Male,Vegetarian,Medium,0,0,Moderate,None,14.69136886772502,43.603081170589334,Multivitamin
+41,Male,Omnivore,Medium,0,1,Moderate,None,17.394762214276334,38.963629198790066,Vitamin C
+18,Male,Omnivore,Low,0,0,Active,None,6.103118540424847,17.084043271414387,Vitamin D
+61,Male,Vegetarian,Low,0,0,Light,Osteoporosis,4.526715628937908,11.27257581873889,Multivitamin
+25,Female,Omnivore,Medium,1,0,Active,None,16.855453538359566,39.96864608237038,Prenatal
+41,Male,Omnivore,Medium,0,0,Sedentary,Heart Disease,19.007416999474483,29.11619761646989,Daily Essentials
+28,Female,Omnivore,Medium,0,1,Active,Osteoporosis,14.577496911582429,26.804034164947446,Calcium+D
+68,Female,Pescatarian,Low,0,1,Moderate,Diabetes,4.598297043418761,17.726936629709535,Antioxidant Blend
+34,Male,Omnivore,Medium,0,0,Light,Osteoporosis,13.056935922949707,24.74169159932818,Calcium+D
+25,Male,Omnivore,Medium,0,1,Sedentary,None,14.112069469782798,21.708028064440857,Vitamin C
+52,Male,Omnivore,Medium,0,1,Light,Anemia,18.250818239490556,31.499410254706365,Iron
+52,Female,Omnivore,Medium,0,1,Sedentary,None,15.24318861208097,24.00148319347121,Antioxidant Blend
+50,Male,Omnivore,Medium,0,1,Sedentary,None,12.585028017209137,25.298866895187707,Vitamin C
+22,Male,Vegetarian,Medium,0,1,Moderate,Heart Disease,15.787087140970987,34.20753335506036,Omega-3
+59,Female,Vegetarian,Medium,0,0,Moderate,Anemia,18.153582032958123,31.08965439752106,B-Complex
+56,Male,Vegetarian,Medium,0,0,Moderate,Osteoporosis,13.314343009357714,32.57774964380205,Calcium+D
+58,Male,Vegetarian,Medium,0,0,Active,None,11.01418434121331,38.19089257135249,Daily Essentials
+45,Male,Vegetarian,Low,0,0,Moderate,None,4.972794331109355,16.770750105110018,Vitamin D
+24,Male,Omnivore,Medium,0,0,Moderate,Anemia,10.86441194987026,39.11331948871598,Iron
+26,Female,Omnivore,Medium,0,0,Sedentary,None,13.922932308432642,30.479858968668424,Multivitamin
+25,Male,Omnivore,Medium,0,0,Moderate,Heart Disease,15.69638553557601,39.67074354787437,Multivitamin
+29,Female,Pescatarian,Medium,0,1,Light,Osteoporosis,14.182716896267126,32.15842058614476,Calcium+D
+51,Male,Omnivore,High,0,1,Active,None,19.84889821880705,31.01223756657122,Vitamin C
+50,Female,Omnivore,High,0,0,Active,None,20.174914762868795,38.769157237659016,Daily Essentials
+65,Male,Omnivore,Medium,0,0,Moderate,None,7.824835026861619,24.76707792484023,Daily Essentials
+72,Male,Omnivore,Low,0,1,Sedentary,None,4.00500268318972,21.357403005034588,Vitamin C
+40,Female,Vegan,Medium,0,0,Active,Osteoporosis,15.132778158210987,28.02568688800632,Vitamin D
+41,Female,Vegan,Low,0,1,Moderate,None,5.17214572998735,20.122365471239547,B12
+54,Female,Vegan,Medium,0,0,Sedentary,Osteoporosis,15.388233774826793,27.22993675817338,Calcium+D
+52,Male,Vegan,High,0,0,Sedentary,None,32.529447434053914,17.603086998567427,B12
+61,Male,Vegan,Low,0,1,Moderate,Anemia,8.176088312139164,17.788321709008816,Iron
+57,Male,Omnivore,Low,0,0,Sedentary,None,3.2244839895775295,18.565480689101186,Vitamin D
+39,Female,Omnivore,Low,0,0,Active,None,5.229738087077764,13.3033663106703,B-Complex
+44,Male,Vegetarian,Medium,0,1,Light,None,12.40346044567198,21.44644010713138,Vitamin C
+52,Female,Vegan,Medium,0,0,Sedentary,Heart Disease,15.625065887877838,20.56822467439474,B12
+18,Male,Vegetarian,Low,0,0,Active,Heart Disease,7.529156754676928,19.705636567198543,Vitamin D
+52,Female,Omnivore,High,0,1,Light,Osteoporosis,29.61295431418096,34.159948141995606,Calcium+D
+54,Female,Omnivore,Medium,1,0,Moderate,None,15.81561948831005,27.42992856176483,Prenatal
+64,Female,Omnivore,Low,0,1,Sedentary,None,1.0,10.780552112680432,Vitamin C
+31,Male,Omnivore,Medium,0,0,Sedentary,Diabetes,12.185467873716883,30.7871405420633,Multivitamin
+20,Male,Omnivore,Medium,0,0,Moderate,None,15.425583165622497,30.518571102470613,Multivitamin
+18,Female,Pescatarian,Medium,1,0,Moderate,None,11.655756878025333,35.28642944173568,Prenatal
+22,Male,Vegetarian,Low,0,0,Moderate,Anemia,4.474433222035063,18.59621664647945,B-Complex
+43,Male,Omnivore,Low,0,1,Moderate,Anemia,7.541262121316446,22.005820099119614,Iron
+72,Female,Omnivore,Low,0,1,Moderate,Anemia,3.5853893193433346,28.5543631851214,B-Complex
+31,Female,Omnivore,High,0,0,Sedentary,Heart Disease,25.60647530944252,31.67171515239551,Multivitamin
+56,Male,Omnivore,High,0,1,Light,None,25.10170681044654,21.435998462907207,Vitamin C
+44,Male,Omnivore,Low,0,0,Active,None,2.7164718149683997,12.070444953835768,Vitamin D
+26,Male,Omnivore,Low,0,0,Moderate,Diabetes,6.071154893776858,19.724485041249597,Omega-3
+32,Female,Omnivore,Low,0,0,Moderate,Osteoporosis,5.0973374737661015,26.828546332252017,Vitamin D+K2
+32,Male,Pescatarian,Low,0,0,Sedentary,None,6.913713758551149,14.860583927791053,Vitamin D
+43,Male,Omnivore,High,0,0,Light,None,30.881283088145942,36.73143426589281,Daily Essentials
+59,Male,Pescatarian,Medium,0,1,Moderate,None,14.847442436276776,25.089576416827896,Vitamin C
+30,Male,Omnivore,Medium,0,0,Active,Diabetes,10.788730064842252,24.996093874803197,Multivitamin
+68,Female,Omnivore,Low,0,0,Moderate,Osteoporosis,2.7627613311328805,21.855194599766275,Calcium+D
+49,Male,Omnivore,Medium,0,0,Active,Heart Disease,7.128635293352203,26.308624855752463,Multivitamin
+56,Female,Vegetarian,Medium,0,0,Moderate,None,11.337989850954262,20.152480785840822,Multivitamin
+66,Male,Omnivore,Medium,0,1,Sedentary,Anemia,15.0429697746318,24.020443582062292,B-Complex
+69,Male,Omnivore,Low,0,0,Light,Heart Disease,2.433645144140384,28.682795644013623,D3+K2
+49,Male,Omnivore,Medium,0,0,Sedentary,None,15.605698678885352,37.25070304810892,Daily Essentials
+21,Male,Pescatarian,Medium,0,0,Sedentary,None,12.666243561997858,40.21696203605567,Daily Essentials
+47,Female,Vegan,Low,0,0,Active,None,7.7121562936134165,10.0,B-Complex
+54,Female,Omnivore,Medium,1,0,Light,None,16.19173382772436,33.27644107882267,Prenatal
+40,Female,Omnivore,High,0,0,Moderate,Anemia,29.972733748857433,35.241098546818506,Iron
+56,Female,Omnivore,High,0,1,Sedentary,None,21.404747247860392,21.04638728004082,Vitamin C
+62,Male,Omnivore,Medium,0,1,Light,Osteoporosis,16.969443635505275,30.965873683073998,Vitamin D+K2
+32,Female,Omnivore,Medium,0,0,Sedentary,None,13.527683610531358,45.20109699207916,Multivitamin
+60,Male,Omnivore,High,1,0,Sedentary,None,29.458065136873838,34.06288119814579,Prenatal
+46,Female,Vegetarian,Medium,0,0,Moderate,None,13.59769696852509,28.528196752004817,Multivitamin
+53,Male,Vegetarian,Low,0,0,Sedentary,None,5.735044605018741,15.482894733365846,Vitamin D
+30,Male,Omnivore,High,0,0,Moderate,None,28.092053449015246,17.86523049167463,Vitamin D
+49,Male,Omnivore,Low,1,0,Sedentary,Anemia,5.77977363894479,11.087700375269542,Prenatal
+24,Male,Vegan,Medium,0,0,Sedentary,Diabetes,15.256060856663428,20.962432976250977,Multivitamin
+68,Male,Omnivore,Low,0,0,Sedentary,Diabetes,3.9957939918022403,18.347740438786214,Vitamin D
+39,Male,Omnivore,Low,1,0,Moderate,None,6.117381932066551,21.612942508100527,Prenatal
+45,Female,Omnivore,Medium,1,0,Moderate,None,11.275151340611917,26.014654911880655,Prenatal
+19,Male,Omnivore,Medium,0,0,Light,None,15.4987969377022,35.28959847586925,Daily Essentials
+59,Male,Omnivore,Low,0,0,Light,Diabetes,2.4825367014739785,13.843002663662734,B-Complex
+62,Female,Omnivore,Low,0,0,Moderate,None,2.98168342130074,21.487933001735893,Vitamin D
+74,Female,Omnivore,Low,0,1,Sedentary,None,5.553418087809969,17.874956468454794,B-Complex
+70,Male,Vegetarian,Medium,0,0,Light,Diabetes,13.03775997055704,31.37820448300713,Daily Essentials
+23,Female,Omnivore,High,0,1,Active,None,29.34878073758122,21.669659155369832,Vitamin C
+45,Female,Omnivore,Medium,0,0,Moderate,None,18.181928791458496,28.69629781837906,Daily Essentials
+45,Male,Omnivore,Medium,0,1,Light,None,18.19604287962489,27.01639431646597,Vitamin C
+61,Female,Omnivore,High,0,0,Active,Anemia,24.82094077045397,26.154573904511505,Iron
+61,Female,Pescatarian,Medium,0,1,Moderate,Heart Disease,20.156551471214463,23.89777998365131,Vitamin C
+37,Male,Omnivore,Low,1,1,Sedentary,None,5.323126026879978,24.733329114183938,Iron
+47,Male,Vegan,Low,0,0,Moderate,None,3.8032643795395624,19.319258505369675,B-Complex
+28,Female,Omnivore,Medium,0,0,Moderate,Anemia,14.746042374454717,18.03032828512029,Iron
+72,Female,Omnivore,Medium,0,0,Light,Heart Disease,16.571280652337038,31.5857869318526,Omega-3
+45,Female,Omnivore,Medium,0,0,Light,None,15.814264481402827,34.35119683603911,Multivitamin
+42,Female,Vegetarian,Medium,0,0,Light,Osteoporosis,15.773886484744974,25.223903608704735,Calcium+D
+56,Female,Omnivore,Medium,0,0,Moderate,None,11.941315104840342,26.642023861296202,Multivitamin
+50,Female,Omnivore,Medium,0,0,Light,Diabetes,9.934313049630948,26.105677677429764,Multivitamin
+18,Female,Omnivore,Medium,0,0,Active,Diabetes,18.426480084758587,27.920079831419336,Multivitamin
+74,Female,Omnivore,Medium,0,1,Moderate,None,13.36366200318077,36.64110109313893,Antioxidant Blend
+44,Female,Vegetarian,High,0,0,Sedentary,Anemia,27.494088411803034,29.315644965765863,Iron
+74,Female,Omnivore,Medium,1,1,Moderate,Heart Disease,15.980396729669343,35.03756127400323,Prenatal
+69,Female,Omnivore,Low,0,0,Sedentary,Diabetes,6.332900633426778,24.37494559650022,Vitamin D
+30,Female,Vegetarian,Medium,0,0,Moderate,None,15.484073773927523,27.697857482514095,Multivitamin
+58,Male,Omnivore,Medium,0,0,Moderate,None,13.815607311227708,35.72408289508384,Multivitamin
+20,Female,Omnivore,Medium,0,0,Sedentary,None,13.429366856139428,25.166367609442446,Multivitamin
+56,Female,Omnivore,Medium,0,1,Light,Heart Disease,14.887929476274184,36.07281876545118,Vitamin C
+23,Female,Vegetarian,Medium,0,0,Sedentary,None,12.271905691078162,26.22969545402917,Multivitamin
+25,Female,Omnivore,Medium,0,1,Sedentary,Diabetes,15.08662716944703,28.070024909649483,Antioxidant Blend
+44,Female,Vegetarian,Low,0,0,Light,Heart Disease,4.3280409808541105,19.651454315665703,Vitamin D
+26,Male,Omnivore,Medium,0,0,Light,None,19.924580845932454,27.38508613700261,Multivitamin
+54,Male,Vegetarian,Low,0,0,Active,Heart Disease,3.8112672553075875,22.887840160807727,B-Complex
+50,Male,Omnivore,Medium,0,0,Light,None,9.22653551685345,33.698618535130414,Multivitamin
+68,Male,Pescatarian,Low,0,0,Light,Anemia,3.9937094961968373,11.119788681053228,B-Complex
+59,Male,Omnivore,High,0,0,Moderate,None,26.669053791432745,31.53032009333746,Daily Essentials
+61,Female,Pescatarian,Medium,0,0,Sedentary,None,21.247046232286756,29.660761536109593,B-Complex
+41,Male,Vegan,High,0,0,Active,None,26.39837999744119,19.589256608688846,B-Complex
+32,Female,Omnivore,High,1,0,Moderate,None,22.80341209181713,32.089735980598554,Prenatal
+71,Male,Omnivore,High,0,0,Moderate,Heart Disease,30.078715358408537,25.605189257930075,Multivitamin
+49,Female,Omnivore,High,0,0,Sedentary,Heart Disease,30.467961730715373,34.65460330441906,Multivitamin
+49,Male,Vegetarian,Medium,0,0,Light,Diabetes,15.920813122078656,38.232368543698115,Daily Essentials
+41,Male,Vegetarian,Medium,0,0,Light,None,8.401167844498339,19.166656431497906,B-Complex
+58,Female,Vegetarian,Low,0,0,Active,None,2.1439383337984705,24.360294911699416,Vitamin D
+69,Female,Omnivore,Low,0,0,Sedentary,None,3.8554058944318683,12.231880048586621,Vitamin D
+66,Male,Omnivore,Medium,0,0,Light,Diabetes,20.08598859860907,29.214304666893163,Daily Essentials
+66,Female,Omnivore,Medium,1,0,Active,Osteoporosis,14.680046125690813,24.52567528492566,Omega-3
+69,Male,Vegetarian,Medium,0,1,Light,None,19.171282423219147,31.13080637439766,Vitamin C
+29,Male,Omnivore,Medium,0,0,Light,None,11.930316701570106,30.400889299064435,Multivitamin
+56,Female,Omnivore,High,1,0,Sedentary,Diabetes,19.146376166293244,36.461536951757104,Prenatal
+19,Female,Omnivore,Medium,0,0,Active,Osteoporosis,11.693159034410552,25.551640340218455,Calcium+D
+20,Male,Vegetarian,Medium,0,0,Sedentary,Heart Disease,12.450241362934062,39.96481441162745,Multivitamin
+66,Female,Omnivore,High,0,0,Moderate,Osteoporosis,24.66174800342477,33.98828451785334,Vitamin D+K2
+54,Female,Vegetarian,High,1,0,Moderate,None,22.310886911249604,30.545813860652455,Prenatal
+66,Female,Omnivore,Medium,0,1,Sedentary,None,21.719229119783595,28.915293816627052,Vitamin C
+73,Male,Omnivore,High,0,0,Moderate,Osteoporosis,19.240903147559663,28.1605833171969,Calcium+D
+34,Male,Vegetarian,High,0,0,Sedentary,Heart Disease,17.638683855063313,28.551937353560973,Multivitamin
+66,Female,Omnivore,High,0,0,Sedentary,None,31.440686117514424,31.01041174161284,Multivitamin
+19,Female,Vegan,Low,0,0,Moderate,Heart Disease,9.083491821125705,21.68645658273526,B-Complex
+19,Female,Omnivore,Medium,0,0,Active,Osteoporosis,12.396000001384358,26.156823260955075,Vitamin D+K2
+45,Male,Omnivore,Medium,0,0,Moderate,Diabetes,19.34080061459867,31.046755769020216,Daily Essentials
+71,Female,Omnivore,Low,0,0,Moderate,Heart Disease,6.064060386584904,12.980544603905804,B-Complex
