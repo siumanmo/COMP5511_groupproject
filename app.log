@@ -62,3 +62,10 @@
 0   20   male              none                0             none                   0         0       0
 2025-04-14 03:16:49,243 ERROR:Error making prediction: columns are missing: {'diet', 'sun_exposure', 'activity_level'}
 2025-04-14 03:16:49,243 INFO:127.0.0.1 - - [14/Apr/2025 03:16:49] "POST /predict HTTP/1.1" 200 -
+2025-04-14 03:33:22,226 INFO:Model loaded successfully.
+2025-04-14 03:33:22,230 INFO:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://10.0.4.213:8080
+2025-04-14 03:33:22,230 INFO:[33mPress CTRL+C to quit[0m
+2025-04-14 03:33:35,211 INFO:127.0.0.1 - - [14/Apr/2025 03:33:35] "GET / HTTP/1.1" 200 -

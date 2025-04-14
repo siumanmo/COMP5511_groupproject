@@ -1,3 +1,28 @@
+from flask import Flask, request, render_template
+import pickle
+import pandas as pd
+import logging
+
+# Set up logging
+logging.basicConfig(level=logging.INFO, 
+                    format='%(asctime)s %(levelname)s:%(message)s',
+                    handlers=[logging.FileHandler("app.log"),
+                              logging.StreamHandler()])
+
+app = Flask(__name__)
+
+# Load the trained model
+try:
+    with open('model.pkl', 'rb') as f:
+        model = pickle.load(f)
+        logging.info("Model loaded successfully.")
+except Exception as e:
+    logging.error(f"Error loading model: {str(e)}")
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
 @app.route('/predict', methods=['POST'])
 def predict():
     input_data = request.form.to_dict()
@@ -6,7 +31,7 @@ def predict():
     # Extract health conditions
     health_conditions = request.form.getlist('health_conditions')
     if not health_conditions:
-        health_conditions = ['none']  # Default to 'none' if no condition is selected
+        health_conditions = ['none']
 
     # Combine selected health conditions into a string
     input_data['health_condition'] = ', '.join(health_conditions)
@@ -26,14 +51,6 @@ def predict():
         # Convert appropriate columns to numeric
         df_input[numeric_columns] = df_input[numeric_columns].apply(pd.to_numeric, errors='coerce')
 
-        # Check if required columns are included
-        required_columns = model.feature_names_in_ if hasattr(model, 'feature_names_in_') else None
-        if required_columns is not None:
-            missing_columns = set(required_columns) - set(df_input.columns)
-            if missing_columns:
-                logging.error(f"Missing expected columns: {missing_columns}")
-                return f"Error: Missing expected columns: {', '.join(missing_columns)}."
-
         # Log the DataFrame before prediction
         logging.info(f"Input DataFrame for prediction:\n{df_input}")
 
@@ -44,4 +61,8 @@ def predict():
     
     except Exception as e:
         logging.error(f"Error making prediction: {str(e)}")
+        logging.error(f"Data Used for Prediction: {df_input}")
         return "Error making prediction. Check logs for details."
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8080)
