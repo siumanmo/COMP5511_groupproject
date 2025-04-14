@@ -1,5 +1,5 @@
-flask==2.3.2  # More stable with older numpy
-pandas==1.5.3  # Compatible bridge version
-numpy==1.24.0  # Most stable wheel-based version
+numpy==1.24.0  # Most stable version for deployment
+scikit-learn==1.2.2  # Compatible with numpy 1.24
+pandas==1.5.3  # Works with this stack
+flask==2.2.5
 gunicorn==20.1.0
-scikit-learn==1.2.2  # Matches numpy 1.24
