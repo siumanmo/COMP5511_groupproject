@@ -12,3 +12,33 @@
  * Running on http://10.0.4.213:8080
 2025-04-14 03:11:01,125 INFO:[33mPress CTRL+C to quit[0m
 2025-04-14 03:11:04,469 INFO:127.0.0.1 - - [14/Apr/2025 03:11:04] "GET / HTTP/1.1" 200 -
+2025-04-14 03:12:28,827 INFO:Model loaded successfully.
+2025-04-14 03:12:28,831 INFO:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://10.0.4.213:8080
+2025-04-14 03:12:28,831 INFO:[33mPress CTRL+C to quit[0m
+2025-04-14 03:13:38,040 INFO:127.0.0.1 - - [14/Apr/2025 03:13:38] "GET / HTTP/1.1" 200 -
+2025-04-14 03:13:46,614 INFO:Received input data: {'age': '20', 'gender': 'male', 'health_conditions': 'none', 'vitamin_d_level': ''}
+2025-04-14 03:13:46,626 ERROR:Error making prediction: columns are missing: {'diet', 'health_condition', 'sun_exposure', 'activity_level'}
+2025-04-14 03:13:46,626 INFO:127.0.0.1 - - [14/Apr/2025 03:13:46] "POST /predict HTTP/1.1" 200 -
+2025-04-14 03:13:58,938 INFO:127.0.0.1 - - [14/Apr/2025 03:13:58] "GET / HTTP/1.1" 200 -
+2025-04-14 03:15:26,908 INFO:Received input data: {'age': '20', 'gender': 'male', 'health_conditions': 'none', 'vitamin_d_level': '2'}
+2025-04-14 03:15:26,911 ERROR:Error making prediction: columns are missing: {'diet', 'health_condition', 'sun_exposure', 'activity_level'}
+2025-04-14 03:15:26,911 INFO:127.0.0.1 - - [14/Apr/2025 03:15:26] "POST /predict HTTP/1.1" 200 -
+2025-04-14 03:15:34,033 INFO:Received input data: {'age': '20', 'gender': 'male', 'health_conditions': 'none', 'vitamin_d_level': '0'}
+2025-04-14 03:15:34,038 ERROR:Error making prediction: columns are missing: {'diet', 'health_condition', 'sun_exposure', 'activity_level'}
+2025-04-14 03:15:34,039 INFO:127.0.0.1 - - [14/Apr/2025 03:15:34] "POST /predict HTTP/1.1" 200 -
+2025-04-14 03:16:00,539 INFO:Model loaded successfully.
+2025-04-14 03:16:00,544 INFO:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://10.0.4.213:8080
+2025-04-14 03:16:00,544 INFO:[33mPress CTRL+C to quit[0m
+2025-04-14 03:16:04,357 INFO:127.0.0.1 - - [14/Apr/2025 03:16:04] "GET / HTTP/1.1" 200 -
+2025-04-14 03:16:11,296 INFO:Received input data: {'age': '20', 'gender': 'male', 'health_conditions': 'none', 'vitamin_d_level': '0'}
+2025-04-14 03:16:11,305 INFO:Input DataFrame for prediction:
+   age gender health_conditions  vitamin_d_level health_condition  sun_hours_per_week  pregnant  smoker
+0   20   male              none                0             none                   0         0       0
+2025-04-14 03:16:11,306 ERROR:Error making prediction: columns are missing: {'diet', 'activity_level', 'sun_exposure'}
+2025-04-14 03:16:11,306 INFO:127.0.0.1 - - [14/Apr/2025 03:16:11] "POST /predict HTTP/1.1" 200 -
