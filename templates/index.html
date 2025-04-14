@@ -1,203 +1,39 @@
 <!-- templates/index.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Vitamin Recommendation</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        input[type="range"] {
-            width: 100%;
-        }
-        .range-value {
-            display: inline-block;
-            width: 50px;
-            text-align: right;
-        }
-        select, button {
-            width: 100%;
-            padding: 8px;
-            margin-top: 5px;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            padding: 12px;
-        }
-        .result {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #f0f0f0;
-            border-radius: 5px;
-        }
-        .binary-options {
-            display: flex;
-            gap: 10px;
-        }
-        .binary-option {
-            flex: 1;
-            text-align: center;
-            padding: 10px;
-            background: #eee;
-            cursor: pointer;
-        }
-        .binary-option.selected {
-            background: #4CAF50;
-            color: white;
-        }
-        input[type="radio"] {
-            display: none;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vitamin Recommendation Form</title>
 </head>
 <body>
-    <h1>Vitamin Recommendation</h1>
-    
-    <form action="/predict" method="post">
-        <!-- Age Slider -->
-        <div class="form-group">
-            <label for="age">Age: <span class="range-value">{{ form_data.age if form_data else config.age.default }}</span></label>
-            <input type="range" id="age" name="age" 
-                   min="{{ config.age.min }}" max="{{ config.age.max }}" 
-                   step="{{ config.age.step }}" 
-                   value="{{ form_data.age if form_data else config.age.default }}"
-                   oninput="document.querySelector('.range-value').textContent = this.value">
-        </div>
-        
-        <!-- Gender Dropdown -->
-        <div class="form-group">
-            <label for="gender">Gender:</label>
-            <select id="gender" name="gender">
-                {% for option in config.gender.options %}
-                <option value="{{ option }}" 
-                        {% if form_data and form_data.gender == option %}selected{% endif %}
-                        {% if not form_data and option == config.gender.default %}selected{% endif %}>
-                    {{ option|capitalize }}
-                </option>
-                {% endfor %}
-            </select>
-        </div>
-        
-        <!-- Diet Dropdown -->
-        <div class="form-group">
-            <label for="diet">Diet:</label>
-            <select id="diet" name="diet">
-                {% for option in config.diet.options %}
-                <option value="{{ option }}"
-                        {% if form_data and form_data.diet == option %}selected{% endif %}
-                        {% if not form_data and option == config.diet.default %}selected{% endif %}>
-                    {{ option|capitalize }}
-                </option>
-                {% endfor %}
-            </select>
-        </div>
-        
-        <!-- Sun Exposure Dropdown -->
-        <div class="form-group">
-            <label for="sun_exposure">Sun Exposure:</label>
-            <select id="sun_exposure" name="sun_exposure">
-                {% for option in config.sun_exposure.options %}
-                <option value="{{ option }}"
-                        {% if form_data and form_data.sun_exposure == option %}selected{% endif %}
-                        {% if not form_data and option == config.sun_exposure.default %}selected{% endif %}>
-                    {{ option|capitalize }}
-                </option>
-                {% endfor %}
-            </select>
-        </div>
-        
-        <!-- Health Condition Dropdown -->
-        <div class="form-group">
-            <label for="health_condition">Health Condition:</label>
-            <select id="health_condition" name="health_condition">
-                {% for option in config.health_condition.options %}
-                <option value="{{ option }}"
-                        {% if form_data and form_data.health_condition == option %}selected{% endif %}
-                        {% if not form_data and option == config.health_condition.default %}selected{% endif %}>
-                    {{ option.replace('_', ' ')|title }}
-                </option>
-                {% endfor %}
-            </select>
-        </div>
-        
-        <!-- Activity Level Dropdown -->
-        <div class="form-group">
-            <label for="activity_level">Activity Level:</label>
-            <select id="activity_level" name="activity_level">
-                {% for option in config.activity_level.options %}
-                <option value="{{ option }}"
-                        {% if form_data and form_data.activity_level == option %}selected{% endif %}
-                        {% if not form_data and option == config.activity_level.default %}selected{% endif %}>
-                    {{ option.replace('_', ' ')|title }}
-                </option>
-                {% endfor %}
-            </select>
-        </div>
-        
-        <!-- Pregnant Binary Options -->
-        <div class="form-group">
-            <label>Pregnant:</label>
-            <div class="binary-options">
-                {% for option in config.pregnant.options %}
-                <label class="binary-option {% if (form_data and form_data.pregnant == option) or (not form_data and option == config.pregnant.default) %}selected{% endif %}">
-                    <input type="radio" name="pregnant" value="{{ option }}"
-                           {% if (form_data and form_data.pregnant == option) or (not form_data and option == config.pregnant.default) %}checked{% endif %}>
-                    {{ option }}
-                </label>
-                {% endfor %}
-            </div>
-        </div>
-        
-        <!-- Smoker Binary Options -->
-        <div class="form-group">
-            <label>Smoker:</label>
-            <div class="binary-options">
-                {% for option in config.smoker.options %}
-                <label class="binary-option {% if (form_data and form_data.smoker == option) or (not form_data and option == config.smoker.default) %}selected{% endif %}">
-                    <input type="radio" name="smoker" value="{{ option }}"
-                           {% if (form_data and form_data.smoker == option) or (not form_data and option == config.smoker.default) %}checked{% endif %}>
-                    {{ option }}
-                </label>
-                {% endfor %}
-            </div>
-        </div>
-        
-        <button type="submit">Get Vitamin Recommendation</button>
+    <h1>Vitamin Recommendation Form</h1>
+    <form action="/predict" method="POST">
+        <label for="age">Age:</label><br>
+        <input type="number" id="age" name="age" required><br>
+        <label for="sun_hours_per_week">Sun Hours Per Week:</label><br>
+        <input type="number" id="sun_hours_per_week" name="sun_hours_per_week" required><br>
+        <label for="vitamin_d_level">Vitamin D Level:</label><br>
+        <input type="number" id="vitamin_d_level" name="vitamin_d_level" required><br>
+        <label for="pregnant">Pregnant (1/0):</label><br>
+        <input type="number" id="pregnant" name="pregnant" required><br>
+        <label for="smoker">Smoker (1/0):</label><br>
+        <input type="number" id="smoker" name="smoker" required><br>
+        <label for="gender">Gender:</label><br>
+        <input type="text" id="gender" name="gender" required><br>
+        <label for="diet">Diet:</label><br>
+        <input type="text" id="diet" name="diet" required><br>
+        <label for="sun_exposure">Sun Exposure:</label><br>
+        <input type="text" id="sun_exposure" name="sun_exposure" required><br>
+        <label for="activity_level">Activity Level:</label><br>
+        <input type="text" id="activity_level" name="activity_level" required><br>
+        <label for="health_condition">Health Condition:</label><br>
+        <input type="text" id="health_condition" name="health_condition" required><br><br>
+        <input type="submit" value="Get Recommendation">
     </form>
-    
-    {% if prediction_text %}
-    <div class="result">
-        <h2>Recommendation:</h2>
-        <p>{{ prediction_text }}</p>
-    </div>
+
+    {% if prediction %}
+        <h2>Recommended Vitamin: {{ prediction }}</h2>
     {% endif %}
-    
-    <script>
-        // Make binary options interactive
-        document.querySelectorAll('.binary-option').forEach(option => {
-            option.addEventListener('click', function() {
-                this.parentNode.querySelectorAll('.binary-option').forEach(opt => {
-                    opt.classList.remove('selected');
-                });
-                this.classList.add('selected');
-                this.querySelector('input[type="radio"]').checked = true;
-            });
-        });
-    </script>
 </body>
 </html>
