@@ -1,19 +1,39 @@
-from flask import Flask, render_template, request, jsonify
-import joblib
+# app.py
 import pandas as pd
-import numpy as np
+from flask import Flask, request, jsonify, render_template
+import pickle
+import os
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
 
 app = Flask(__name__)
 
-# Load the model and encoder
-nb_model = joblib.load('model/vitamin_recommender_nb.pkl')
-target_encoder = joblib.load('model/target_encoder.pkl')
+# Load the trained model
+def load_model():
+    # Define the model structure (same as training)
+    categorical_features = ['gender', 'diet', 'sun_exposure', 'activity_level', 'health_condition']
+    numeric_features = ['age', 'sun_hours_per_week', 'vitamin_d_level', 'pregnant', 'smoker']
+    
+    preprocessor = ColumnTransformer(
+        transformers=[
+            ('num', 'passthrough', numeric_features),
+            ('cat', OneHotEncoder(handle_unknown='ignore'), categorical_features)
+        ])
+    
+    model = Pipeline([
+        ('preprocessor', preprocessor),
+        ('classifier', RandomForestClassifier(n_estimators=100, random_state=42, class_weight='balanced'))
+    ])
+    
+    # Load the saved model weights
+    if os.path.exists('model.pkl'):
+        with open('model.pkl', 'rb') as f:
+            model = pickle.load(f)
+    return model
 
-# Define feature columns in the same order as training
-FEATURE_COLUMNS = [
-    'age', 'gender', 'dietary_habits', 'physical_activity', 
-    'sleep_pattern', 'stress_level', 'health_goal', 'existing_condition'
-]
+model = load_model()
 
 @app.route('/')
 def home():
@@ -22,45 +42,29 @@ def home():
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
-        # Get form data
-        input_data = {
-            'age': int(request.form['age']),
+        # Get data from form
+        data = {
+            'age': float(request.form['age']),
             'gender': request.form['gender'],
-            'dietary_habits': request.form['dietary_habits'],
-            'physical_activity': request.form['physical_activity'],
-            'sleep_pattern': request.form['sleep_pattern'],
-            'stress_level': request.form['stress_level'],
-            'health_goal': request.form['health_goal'],
-            'existing_condition': request.form['existing_condition']
+            'diet': request.form['diet'],
+            'sun_exposure': request.form['sun_exposure'],
+            'sun_hours_per_week': float(request.form['sun_hours_per_week']),
+            'vitamin_d_level': float(request.form['vitamin_d_level']),
+            'activity_level': request.form['activity_level'],
+            'pregnant': int(request.form.get('pregnant', 0)),
+            'smoker': int(request.form.get('smoker', 0)),
+            'health_condition': request.form['health_condition']
         }
         
-        # Convert to DataFrame
-        input_df = pd.DataFrame([input_data])
-        
-        # Encode categorical variables (using same encoding as training)
-        # Note: In a production app, you should save and load the encoders for each feature
-        gender_map = {'male': 1, 'female': 0}
-        dietary_map = {'vegetarian': 2, 'vegan': 1, 'omnivore': 0}
-        activity_map = {'sedentary': 0, 'moderate': 1, 'active': 2}
-        sleep_map = {'poor': 0, 'average': 1, 'good': 2}
-        stress_map = {'high': 0, 'medium': 1, 'low': 2}
-        goal_map = {'weight_loss': 0, 'muscle_gain': 1, 'general_health': 2}
-        condition_map = {'none': 0, 'diabetes': 1, 'hypertension': 2, 'anemia': 3}
-        
-        input_df['gender'] = input_df['gender'].map(gender_map)
-        input_df['dietary_habits'] = input_df['dietary_habits'].map(dietary_map)
-        input_df['physical_activity'] = input_df['physical_activity'].map(activity_map)
-        input_df['sleep_pattern'] = input_df['sleep_pattern'].map(sleep_map)
-        input_df['stress_level'] = input_df['stress_level'].map(stress_map)
-        input_df['health_goal'] = input_df['health_goal'].map(goal_map)
-        input_df['existing_condition'] = input_df['existing_condition'].map(condition_map)
+        # Convert to DataFrame for prediction
+        input_df = pd.DataFrame([data])
         
         # Make prediction
-        prediction = nb_model.predict(input_df)
-        recommended_vitamin = target_encoder.inverse_transform(prediction)[0]
+        prediction = model.predict(input_df)[0]
         
         return render_template('index.html', 
-                             prediction_text=f'Recommended Vitamin: {recommended_vitamin}')
+                             prediction_text=f'Recommended Vitamin: {prediction}',
+                             form_data=data)
     
     except Exception as e:
         return render_template('index.html', 

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vitamin Recommendation System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .prediction {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+        }
+        .checkbox-group input {
+            width: auto;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Vitamin Recommendation System</h1>
+    <form action="/predict" method="post">
+        <div class="form-group">
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" required value="{{ form_data.age if form_data }}">
+        </div>
+        
+        <div class="form-group">
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender" required>
+                <option value="male" {% if form_data and form_data.gender == 'male' %}selected{% endif %}>Male</option>
+                <option value="female" {% if form_data and form_data.gender == 'female' %}selected{% endif %}>Female</option>
+                <option value="other" {% if form_data and form_data.gender == 'other' %}selected{% endif %}>Other</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="diet">Diet:</label>
+            <select id="diet" name="diet" required>
+                <option value="omnivore" {% if form_data and form_data.diet == 'omnivore' %}selected{% endif %}>Omnivore</option>
+                <option value="vegetarian" {% if form_data and form_data.diet == 'vegetarian' %}selected{% endif %}>Vegetarian</option>
+                <option value="vegan" {% if form_data and form_data.diet == 'vegan' %}selected{% endif %}>Vegan</option>
+                <option value="pescatarian" {% if form_data and form_data.diet == 'pescatarian' %}selected{% endif %}>Pescatarian</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="sun_exposure">Sun Exposure:</label>
+            <select id="sun_exposure" name="sun_exposure" required>
+                <option value="low" {% if form_data and form_data.sun_exposure == 'low' %}selected{% endif %}>Low</option>
+                <option value="moderate" {% if form_data and form_data.sun_exposure == 'moderate' %}selected{% endif %}>Moderate</option>
+                <option value="high" {% if form_data and form_data.sun_exposure == 'high' %}selected{% endif %}>High</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="sun_hours_per_week">Sun Hours Per Week:</label>
+            <input type="number" step="0.1" id="sun_hours_per_week" name="sun_hours_per_week" required value="{{ form_data.sun_hours_per_week if form_data }}">
+        </div>
+        
+        <div class="form-group">
+            <label for="vitamin_d_level">Vitamin D Level (ng/mL):</label>
+            <input type="number" step="0.1" id="vitamin_d_level" name="vitamin_d_level" required value="{{ form_data.vitamin_d_level if form_data }}">
+        </div>
+        
+        <div class="form-group">
+            <label for="activity_level">Activity Level:</label>
+            <select id="activity_level" name="activity_level" required>
+                <option value="sedentary" {% if form_data and form_data.activity_level == 'sedentary' %}selected{% endif %}>Sedentary</option>
+                <option value="lightly_active" {% if form_data and form_data.activity_level == 'lightly_active' %}selected{% endif %}>Lightly Active</option>
+                <option value="moderately_active" {% if form_data and form_data.activity_level == 'moderately_active' %}selected{% endif %}>Moderately Active</option>
+                <option value="very_active" {% if form_data and form_data.activity_level == 'very_active' %}selected{% endif %}>Very Active</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <div class="checkbox-group">
+                <input type="checkbox" id="pregnant" name="pregnant" value="1" {% if form_data and form_data.pregnant == 1 %}checked{% endif %}>
+                <label for="pregnant">Pregnant</label>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="checkbox-group">
+                <input type="checkbox" id="smoker" name="smoker" value="1" {% if form_data and form_data.smoker == 1 %}checked{% endif %}>
+                <label for="smoker">Smoker</label>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="health_condition">Health Condition:</label>
+            <select id="health_condition" name="health_condition" required>
+                <option value="none" {% if form_data and form_data.health_condition == 'none' %}selected{% endif %}>None</option>
+                <option value="osteoporosis" {% if form_data and form_data.health_condition == 'osteoporosis' %}selected{% endif %}>Osteoporosis</option>
+                <option value="malabsorption" {% if form_data and form_data.health_condition == 'malabsorption' %}selected{% endif %}>Malabsorption</option>
+                <option value="chronic_kidney_disease" {% if form_data and form_data.health_condition == 'chronic_kidney_disease' %}selected{% endif %}>Chronic Kidney Disease</option>
+                <option value="other" {% if form_data and form_data.health_condition == 'other' %}selected{% endif %}>Other</option>
+            </select>
+        </div>
+        
+        <button type="submit">Get Vitamin Recommendation</button>
+    </form>
+    
+    {% if prediction_text %}
+    <div class="prediction">
+        <h2>Result:</h2>
+        <p>{{ prediction_text }}</p>
+    </div>
+    {% endif %}
+</body>
+</html>
