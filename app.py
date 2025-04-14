@@ -6,15 +6,21 @@ import logging
 
 app = Flask(__name__)
 
-# Set up logging
-logging.basicConfig(level=logging.INFO)
+# Configure logging
+logging.basicConfig(level=logging.DEBUG)  # Set to DEBUG for detailed logs
 
 # Load your model
 model_path = os.path.join(os.path.dirname(__file__), 'model.pkl')
 if os.path.exists(model_path):
-    with open(model_path, 'rb') as f:
-        model = pickle.load(f)
+    try:
+        with open(model_path, 'rb') as f:
+            model = pickle.load(f)
+        app.logger.info("Model loaded successfully.")
+    except Exception as e:
+        app.logger.error(f"Failed to load the model: {str(e)}")
+        raise RuntimeError(f"Failed to load the model: {str(e)}")
 else:
+    app.logger.error(f"Model file not found at {model_path}")
     raise RuntimeError(f"Model file not found at {model_path}")
 
 @app.route('/')
@@ -24,10 +30,10 @@ def home():
 
 @app.route('/predict', methods=['POST'])
 def predict():
+    app.logger.info("Prediction request received with form data: %s", request.form)
+    
     try:
-        app.logger.info("Prediction request received")
-        
-        # Extract form data
+        # Extract form data with validation
         gender = request.form['gender']
         diet = request.form['diet']
         sun_exposure = request.form['sun_exposure']
@@ -52,6 +58,8 @@ def predict():
             'pregnant': [pregnant],
             'smoker': [smoker]
         })
+        
+        app.logger.debug(f"Input DataFrame created: {input_data}")
 
         # Make prediction
         prediction = model.predict(input_data)
@@ -60,7 +68,7 @@ def predict():
         return render_template('index.html', prediction=prediction[0])
     
     except Exception as e:
-        app.logger.error(f"Error occurred: {str(e)}")
+        app.logger.error(f"Error occurred during prediction: {str(e)}")
         return f"Error: {str(e)}", 500
 
 if __name__ == '__main__':
