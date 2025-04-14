@@ -20,13 +20,28 @@
             <option value="other">Other</option>
         </select><br>
 
-        <label>Health Conditions (select all that apply):</label><br>
-        <input type="checkbox" name="health_conditions" value="none"> None<br>
-        <input type="checkbox" name="health_conditions" value="diabetes"> Diabetes<br>
-        <input type="checkbox" name="health_conditions" value="hypertension"> Hypertension<br>
-        <input type="checkbox" name="health_conditions" value="osteoporosis"> Osteoporosis<br>
-        <input type="checkbox" name="health_conditions" value="pregnancy"> Pregnancy<br>
-        <input type="checkbox" name="health_conditions" value="other"> Other<br>
+        <label for="health_condition">Health Condition:</label><br>
+        <select id="health_condition" name="health_condition" required>
+            <option value="none">None</option>
+            <option value="diabetes">Diabetes</option>
+            <option value="hypertension">Hypertension</option>
+            <option value="osteoporosis">Osteoporosis</option>
+            <option value="pregnancy">Pregnancy</option>
+            <option value="other">Other</option>
+        </select><br>
+        
+        <label for="diet">Diet:</label><br>
+        <input type="text" id="diet" name="diet" required><br>
+
+        <label for="sun_exposure">Sun Exposure:</label><br>
+        <input type="text" id="sun_exposure" name="sun_exposure" required><br>
+
+        <label for="activity_level">Activity Level:</label><br>
+        <select id="activity_level" name="activity_level" required>
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+        </select><br>
 
         <label for="vitamin_d_level">Vitamin D Level (optional):</label><br>
         <input type="number" id="vitamin_d_level" name="vitamin_d_level"><br>
