@@ -1,6 +1,6 @@
 Flask==2.0.1
-pandas==1.5.3  # Downgraded to stable version
-numpy==1.24.3  # Matching stable version
-scikit-learn==1.2.2  # Downgraded to match numpy/pandas
+pandas==2.0.3
+numpy==1.26.0  # Critical change - stable version that works with both pandas and scikit-learn
+scikit-learn==1.6.1  # Matches your original model version
 gunicorn==20.1.0
 Werkzeug==2.0.3
