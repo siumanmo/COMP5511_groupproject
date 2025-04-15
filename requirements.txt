@@ -1,6 +1,6 @@
 Flask==2.0.1
-pandas==2.0.3
-numpy==1.24.4  # Downgrade numpy to match pandas 2.0.3
+pandas==2.1.0  # Updated to work with numpy 2.x
+numpy==2.0.2   # Keep the original version you needed
 scikit-learn==1.6.1
 gunicorn==20.1.0
 Werkzeug==2.0.3
