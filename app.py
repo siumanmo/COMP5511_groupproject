@@ -5,7 +5,7 @@ import os
 
 app = Flask(__name__)
 
-# Load the model - updated path for Render
+# Model loading - Render compatible path
 model_path = os.path.join(os.path.dirname(__file__), 'model.pkl')
 with open(model_path, 'rb') as f:
     model = pickle.load(f)
@@ -41,6 +41,7 @@ def index():
     
     return render_template('index.html')
 
+# Render-compatible server configuration
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
